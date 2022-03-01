@@ -30,11 +30,13 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-standard": "^5.0.0",
+    "typed-scss-modules": "^6.2.0",
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start & yarn css:types",
     "build": "react-scripts build",
+    "css:types": "typed-scss-modules -w src --exportType default",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
