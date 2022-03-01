@@ -4,7 +4,6 @@
   "endOfLine": "auto",
   "jsxBracketSameLine": false,
   "jsxSingleQuote": false,
-  "parser": "typescript",
   "printWidth": 120,
   "proseWrap": "preserve",
   "semi": true,
