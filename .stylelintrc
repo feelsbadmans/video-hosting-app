@@ -1,0 +1,9 @@
+{
+  "plugins": ["stylelint-scss"],
+  "rules": {
+    "color-no-invalid-hex": true,
+    "string-no-newline": true,
+    "color-hex-length": "long",
+    "max-empty-lines": 1
+  }
+}
