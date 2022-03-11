@@ -1,10 +1,6 @@
 export type Styles = {
-  'app': string;
-  'appHeader': string;
-  'appLink': string;
-  'appLogo': string;
-  'appLogoFloat': string;
-  'biba': string;
+  app: string;
+  layout: string;
 };
 
 export type ClassNames = keyof Styles;
