@@ -5,6 +5,13 @@ body {
   background-color: var(--color-bg-1);
 }
 
+@font-face {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: 400;
+  src: url('/src/fonts/Jost-Regular.ttf');
+}
+
 body * {
   font-family: Jost;
 }
