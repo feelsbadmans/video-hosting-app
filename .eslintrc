@@ -55,6 +55,8 @@
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "import/no-duplicates": "error",
     "import/no-unresolved": "off",
     "simple-import-sort/exports": "error",

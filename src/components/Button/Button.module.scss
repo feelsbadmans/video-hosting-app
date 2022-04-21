@@ -1,0 +1,45 @@
+.button {
+  outline: none;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: var(--color-bg-3);
+  color: var(--color-text-3);
+}
+
+.primary {
+  background-color: var(--color-bg-3);
+  color: var(--color-text-3);
+  border-color: var(--color-text-3);
+}
+
+.secondary {
+  background-color: var(--color-bg-2);
+  color: var(--color-text-1);
+  border-color: var(--color-text-1);
+}
+
+.outlinePrimary {
+  background-color: var(--color-bg-1);
+  color: var(--color-text-3);
+  border-color: var(--color-text-3);
+}
+
+.outlineSecondary {
+  background-color: var(--color-bg-1);
+  color: var(--color-text-1);
+  border-color: var(--color-text-1);
+}
+
+.s {
+  padding: 4px 12px;
+}
+
+.m {
+  padding: 8px 20px;
+}
+
+.l {
+  padding: 12px 28px;
+}
