@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form } from 'react-final-form';
+import { useNavigate } from 'react-router-dom';
+import { register } from 'api/userProfile';
 
 import { Button } from 'components/Button';
 import { Input } from 'components/Input';
@@ -10,11 +12,18 @@ import { validateRegisterForm } from './validate';
 
 import css from '../Auth.module.scss';
 
-//TODO: перенести на страницу авторизации
 export const RegisterPage: React.FC = () => {
-  const onSubmit = (v: RegisterFormType) => {
-    console.log(v);
+  const navigate = useNavigate();
+
+  const onSubmit = async (v: RegisterFormType) => {
+    await register({ ...v, name: v.username }).then(() => navigate('/'));
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   return (
     <div className={css.container}>
@@ -30,7 +39,7 @@ export const RegisterPage: React.FC = () => {
               <Input name="username" label="Имя пользователя" placeholder="введите имя пользователя" />
               <Input name="password" label="Пароль" placeholder="введите пароль" type="password" />
               <Input
-                name="passwordReply"
+                name="passwordRepeat"
                 label="Повторите пароль"
                 placeholder="введите пароль ещё раз"
                 type="password"

@@ -9,4 +9,4 @@ const validationSchema: Yup.SchemaOf<AuthFormType> = Yup.object().shape({
   password: Yup.string().required('обязательное поле'),
 });
 
-export const validateRegisterForm = validateFormValues<AuthFormType>(validationSchema);
+export const validateAuthForm = validateFormValues<AuthFormType>(validationSchema);

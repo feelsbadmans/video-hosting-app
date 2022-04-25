@@ -1,41 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form } from 'react-final-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from 'api/userProfile';
 
 import { Button } from 'components/Button';
 import { Input } from 'components/Input';
 
 import { autnFormInitValues } from './constants';
 import { AuthFormType } from './types';
+import { validateAuthForm } from './validate';
 
 import css from '../Auth.module.scss';
 
 //TODO: перенести на страницу авторизации
 export const AuthPage: React.FC = () => {
-  const onSubmit = (v: AuthFormType) => {
-    console.log(v);
+  const navigate = useNavigate();
+
+  const onSubmit = async (v: AuthFormType) => {
+    await login(v).then(() => {
+      navigate('/');
+    });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   return (
     <div className={css.container}>
       <h2>Video Hosting App</h2>
-      <Form<AuthFormType> initialValues={autnFormInitValues} onSubmit={onSubmit}>
+      <Form<AuthFormType> initialValues={autnFormInitValues} onSubmit={onSubmit} validate={validateAuthForm}>
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <div className={css.form}>
-              <Input
-                name="username"
-                label="Имя пользователя"
-                placeholder="введите имя пользователя"
-                validate={(v) => (!v ? 'non-empty field' : v === 'biba' ? 'not biba' : undefined)}
-              />
-              <Input
-                name="password"
-                label="Пароль"
-                placeholder="введите пароль"
-                validate={(v) => (v ? undefined : 'non-empty field')}
-                type="password"
-              />
+              <Input name="username" label="Имя пользователя" placeholder="введите имя пользователя" />
+              <Input name="password" label="Пароль" placeholder="введите пароль" type="password" />
               <Button view="primary" size="l" type="submit">
                 Войти
               </Button>

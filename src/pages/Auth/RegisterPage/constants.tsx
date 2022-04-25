@@ -1,1 +1,1 @@
-export const registerFormInitValues = { username: '', password: '', passwordReply: '' };
+export const registerFormInitValues = { username: '', password: '', passwordRepeat: '' };
