@@ -1,0 +1,1 @@
+export { InputCore } from './InputCore';
