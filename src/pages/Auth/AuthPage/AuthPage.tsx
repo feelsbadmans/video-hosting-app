@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Form } from 'react-final-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from 'api/userProfile';
+import { setErrorAction } from 'redux/actions/error';
+import { useAppDispatch } from 'redux/hooks';
 
 import { Button } from 'components/Button';
 import { Input } from 'components/Input';
@@ -14,12 +16,17 @@ import css from '../Auth.module.scss';
 
 //TODO: перенести на страницу авторизации
 export const AuthPage: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onSubmit = async (v: AuthFormType) => {
-    await login(v).then(() => {
-      navigate('/');
-    });
+    await login(v)
+      .then(() => {
+        navigate('/');
+      })
+      .catch((e) => {
+        dispatch(setErrorAction(e.response?.data?.errorMessage ?? e.message));
+      });
   };
 
   useEffect(() => {

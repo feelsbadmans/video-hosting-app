@@ -1,7 +1,13 @@
-import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/toolkit';
+
+import { errorReducer as error } from './reducers/error';
+
+const reducer = combineReducers({
+  error,
+});
 
 export const store = configureStore({
-  reducer: {},
+  reducer,
 });
 
 export type AppDispatch = typeof store.dispatch;

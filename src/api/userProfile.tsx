@@ -5,24 +5,18 @@ import { AuthApiApi, CreateUserDto, LoginUserDto } from 'api_generated';
 export const login = async (options: LoginUserDto) => {
   const service = new AuthApiApi();
 
-  await service
-    .login(options)
-    .then((res) => {
-      const token = res.headers['authorization'];
+  await service.login(options).then((res) => {
+    const token = res.headers['authorization'];
 
-      localStorage.setItem('token', token);
-      localStorage.setItem('username', res.data.user?.username || '');
-    })
-    .catch(console.error);
+    localStorage.setItem('token', token);
+    localStorage.setItem('username', res.data.user?.username || '');
+  });
 };
 
 export const register = async (options: CreateUserDto) => {
   const service = new AuthApiApi();
 
-  try {
-    await service.register(options);
+  await service.register(options).then(async () => {
     await login({ username: options.username, password: options.password });
-  } catch (err) {
-    console.error(err);
-  }
+  });
 };
