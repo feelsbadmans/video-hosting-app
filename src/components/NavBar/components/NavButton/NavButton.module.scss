@@ -12,10 +12,10 @@
 
   transition: 0.3s;
   color: var(--color-text-1);
+  cursor: pointer;
 }
 
 .default {
-  cursor: pointer;
   &:hover {
     background-color: var(--color-bg-3);
     border: none;
@@ -25,7 +25,6 @@
 }
 
 .active {
-  cursor: default;
   color: var(--color-bg-3);
   font-weight: 600;
 }

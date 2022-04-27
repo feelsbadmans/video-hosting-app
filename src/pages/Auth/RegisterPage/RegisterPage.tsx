@@ -23,7 +23,7 @@ export const RegisterPage: React.FC = () => {
   const onSubmit = async (v: RegisterFormType) => {
     loadingRef.current = true;
 
-    await register({ ...v, name: v.username })
+    await register({ ...v, name: v.username, group: 'IU5' })
       .then(() => navigate('/'))
       .catch((e) => {
         loadingRef.current = false;

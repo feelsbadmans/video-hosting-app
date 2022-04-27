@@ -39,6 +39,7 @@ export const PrivateRoute: React.FC = ({ children }) => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('username');
                 navigate('/auth');
+                window.location.reload();
               }}
             >
               перезайти
