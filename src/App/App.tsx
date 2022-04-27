@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthPage, RegisterPage } from 'pages/Auth';
-import { Main } from 'pages/Main';
+import { Info } from 'pages/Info';
 
 import { ErrorMessage } from 'components/ErrorMessage';
 import { PrivateRoute } from 'components/PrivateRoute';
@@ -20,35 +20,14 @@ export const App = () => {
 
             {/* Private routes */}
             <Route path="" element={<PrivateRoute />} />
-            <Route
-              path="/videos"
-              element={
-                <PrivateRoute>
-                  <Main />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/my-videos"
-              element={
-                <PrivateRoute>
-                  <Main />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/moderation"
-              element={
-                <PrivateRoute>
-                  <Main />
-                </PrivateRoute>
-              }
-            />
+            <Route path="/videos" element={<PrivateRoute></PrivateRoute>} />
+            <Route path="/my-videos" element={<PrivateRoute></PrivateRoute>} />
+            <Route path="/moderation" element={<PrivateRoute></PrivateRoute>} />
             <Route
               path="info"
               element={
                 <PrivateRoute>
-                  <Main />
+                  <Info />
                 </PrivateRoute>
               }
             />

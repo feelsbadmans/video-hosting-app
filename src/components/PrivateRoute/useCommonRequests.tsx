@@ -31,13 +31,11 @@ export const useCommonRequests = (canFetch: boolean) => {
 
       if (authorities?.some((v) => v.name === 'ADMIN')) {
         navigate('/moderation');
-      }
-
-      if (authorities?.some((v) => v.name === 'VIDEO_CREATOR')) {
+      } else if (authorities?.some((v) => v.name === 'VIDEO_CREATOR')) {
         navigate('/my-videos');
+      } else {
+        navigate('/videos');
       }
-
-      navigate('/videos');
     }
   }, [location.pathname, navigate, userProfileData, userProfileFetchStatus]);
 
