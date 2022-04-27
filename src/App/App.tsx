@@ -18,8 +18,34 @@ export const App = () => {
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/register" element={<RegisterPage />} />
 
+            {/* Private routes */}
+            <Route path="" element={<PrivateRoute />} />
             <Route
-              path=""
+              path="/videos"
+              element={
+                <PrivateRoute>
+                  <Main />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/my-videos"
+              element={
+                <PrivateRoute>
+                  <Main />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/moderation"
+              element={
+                <PrivateRoute>
+                  <Main />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="info"
               element={
                 <PrivateRoute>
                   <Main />

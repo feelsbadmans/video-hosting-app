@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
+import { NavBar } from 'components/NavBar';
 import { Spinner } from 'components/Spinner';
 
 import { useCommonRequests } from './useCommonRequests';
@@ -81,6 +82,7 @@ export const PrivateRoute: React.FC = ({ children }) => {
               localStorage.removeItem('token');
               localStorage.removeItem('username');
               navigate('/auth');
+              window.location.reload();
             }}
           >
             перезайти
@@ -91,7 +93,12 @@ export const PrivateRoute: React.FC = ({ children }) => {
     }
 
     if (user) {
-      return <>{children}</>;
+      return (
+        <>
+          <NavBar user={user} />
+          {children}
+        </>
+      );
     }
 
     return (

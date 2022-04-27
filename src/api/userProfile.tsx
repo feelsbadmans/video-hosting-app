@@ -65,13 +65,13 @@ export const getUserByUserName = (username: string): Promise<UserProfile> => {
         user.authorities = v.data._embedded?.authorityEntities;
       });
 
-      if (user.authorities?.[0].authority === AuthorityEntityNameEnum.OrdinaryUser) {
+      if (user.authorities?.some((v) => v.name === AuthorityEntityNameEnum.OrdinaryUser)) {
         await userPropertyService.followPropertyReferenceUserentityGet21(id, options).then((v) => {
           user.group = v.data;
         });
       }
 
-      if (user.authorities?.[0].authority === AuthorityEntityNameEnum.VideoCreator) {
+      if (user.authorities?.some((v) => v.name === AuthorityEntityNameEnum.VideoCreator)) {
         await userPropertyService.followPropertyReferenceUserentityGet31(id, options).then((v) => {
           user.videos = v.data._embedded?.videoEntities || [];
         });
