@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Form } from 'react-final-form';
 import { useNavigate } from 'react-router-dom';
 import { register } from 'api/userProfile';
+import { setErrorAction } from 'redux/actions/error';
+import { useAppDispatch } from 'redux/hooks';
 
 import { Button } from 'components/Button';
 import { Input } from 'components/Input';
@@ -14,9 +16,19 @@ import css from '../Auth.module.scss';
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const loadingRef = useRef(false);
 
   const onSubmit = async (v: RegisterFormType) => {
-    await register({ ...v, name: v.username }).then(() => navigate('/'));
+    loadingRef.current = true;
+
+    await register({ ...v, name: v.username })
+      .then(() => navigate('/'))
+      .catch((e) => {
+        loadingRef.current = false;
+        dispatch(setErrorAction(e.response?.data?.errorMessage ?? e.message));
+      });
   };
 
   useEffect(() => {
@@ -44,7 +56,7 @@ export const RegisterPage: React.FC = () => {
                 placeholder="введите пароль ещё раз"
                 type="password"
               />
-              <Button view="primary" size="l" type="submit">
+              <Button view="primary" size="l" type="submit" isLoading={loadingRef.current}>
                 Регистрация
               </Button>
             </div>

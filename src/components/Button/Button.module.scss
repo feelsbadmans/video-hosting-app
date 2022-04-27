@@ -21,13 +21,13 @@
 }
 
 .outlinePrimary {
-  background-color: var(--color-bg-1);
+  background: none;
   color: var(--color-text-3);
   border-color: var(--color-text-3);
 }
 
 .outlineSecondary {
-  background-color: var(--color-bg-1);
+  background: none;
   color: var(--color-text-1);
   border-color: var(--color-text-1);
 }
@@ -42,4 +42,13 @@
 
 .l {
   padding: 12px 50px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+
+  & > div {
+    border: 4px solid;
+  }
 }
