@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Form } from 'react-final-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from 'api/userProfile';
@@ -19,12 +19,16 @@ export const AuthPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const loadingRef = useRef(false);
+
   const onSubmit = async (v: AuthFormType) => {
+    loadingRef.current = true;
     await login(v)
       .then(() => {
         navigate('/');
       })
       .catch((e) => {
+        loadingRef.current = false;
         dispatch(setErrorAction(e.response?.data?.errorMessage ?? e.message));
       });
   };
@@ -44,7 +48,7 @@ export const AuthPage: React.FC = () => {
             <div className={css.form}>
               <Input name="username" label="Имя пользователя" placeholder="введите имя пользователя" />
               <Input name="password" label="Пароль" placeholder="введите пароль" type="password" />
-              <Button view="primary" size="l" type="submit">
+              <Button view="primary" size="l" type="submit" isLoading={loadingRef.current}>
                 Войти
               </Button>
               <Link to="/register" className={css.link}>
