@@ -8,12 +8,13 @@ const initialState: ErrorState = {
 };
 
 const errorSlice = createSlice<ErrorState, SliceCaseReducers<ErrorState>>({
-  name: 'weather',
+  name: 'ERROR',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(setErrorAction, (state, { payload }) => payload);
     builder.addCase(clearErrorAction, (state, { payload }) => payload);
+    //all errors
   },
 });
 
