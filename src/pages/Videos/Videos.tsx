@@ -7,6 +7,8 @@ import { useAppSelector } from 'redux/hooks';
 
 import { Spinner } from 'components/Spinner';
 
+import css from './Videos.module.scss';
+
 export const Videos: React.VFC = () => {
   const dispatch = useDispatch();
 
@@ -35,25 +37,23 @@ export const Videos: React.VFC = () => {
   }, [dispatch, pageState.page, pageState.size, user, needResize]);
 
   if (fetchStatus === 'error') {
-    return <span>Ошибка</span>;
+    return (
+      <Pagination
+        onChange={(p, s) => {
+          handleSetPage(p);
+          handleSetSize(s);
+          setNeedResize(true);
+        }}
+        current={pageState.page}
+        total={pageInfo?.totalElements}
+        pageSize={pageState.size}
+      />
+    );
   }
 
   return (
-    <div>
-      {fetchStatus !== 'fetched' ? (
-        <Spinner />
-      ) : (
-        <Pagination
-          onChange={(p, s) => {
-            handleSetPage(p);
-            handleSetSize(s);
-            setNeedResize(true);
-          }}
-          current={pageState.page}
-          total={pageInfo?.totalElements}
-          pageSize={pageState.size}
-        />
-      )}
+    <div className={css.container}>
+      {fetchStatus !== 'fetched' ? <Spinner /> : <h1>Доступных видео пока нет :(</h1>}
     </div>
   );
 };
