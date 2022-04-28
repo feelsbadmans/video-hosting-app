@@ -8,6 +8,11 @@
   height: 50%;
   font-size: 24px;
   text-align: center;
+
+  h2,
+  h3 {
+    color: var(--color-text-1) !important;
+  }
 }
 
 .form {
