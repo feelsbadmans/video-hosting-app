@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import { Button as AntButton } from 'antd';
 import cn from 'classnames';
 
 import { Spinner } from 'components/Spinner';
@@ -28,7 +27,7 @@ export const Button: FC<ButtonProps> = ({
   const loaderTheme = useMemo(() => (view === 'primary' ? 'dark' : 'light'), [view]);
 
   return (
-    <AntButton onClick={onClick} className={cn(css.button, css[view], css[size], className)} htmlType={type}>
+    <button onClick={onClick} className={cn(css.button, css[view], css[size], className)} type={type}>
       {isLoading ? (
         <div className={css.spinner}>
           <Spinner theme={loaderTheme} />
@@ -36,6 +35,6 @@ export const Button: FC<ButtonProps> = ({
       ) : (
         children
       )}
-    </AntButton>
+    </button>
   );
 };

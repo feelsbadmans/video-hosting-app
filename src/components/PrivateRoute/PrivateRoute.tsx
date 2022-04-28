@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-import { NavBar } from 'components/NavBar';
+import { NavBar } from 'components/NavBar/index';
 import { Spinner } from 'components/Spinner';
 
 import { useCommonRequests } from './useCommonRequests';
@@ -39,6 +39,7 @@ export const PrivateRoute: React.FC = ({ children }) => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('username');
                 navigate('/auth');
+                window.location.reload();
               }}
             >
               перезайти
