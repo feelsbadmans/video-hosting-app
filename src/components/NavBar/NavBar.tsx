@@ -50,7 +50,7 @@ export const NavBar: React.FC<NavBarProps> = ({ user }) => {
           </NavButton>
         ))}
       </div>
-      <User user={user} />
+      <User user={user} needAuthorities />
     </div>
   );
 };

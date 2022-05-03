@@ -1,0 +1,103 @@
+.container {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+
+  &Elements {
+    color: var(--color-text-1);
+    margin-right: 20px;
+    margin-top: 5.5px;
+  }
+
+  :global {
+    .ant-pagination {
+      .ant-pagination-item-link {
+        background-color: var(--color-bg-2);
+        border-color: var(--color-text-1);
+        color: var(--color-text-1);
+
+        &:hover {
+          border-color: var(--color-bg-3);
+          color: var(--color-bg-3);
+        }
+      }
+      &-item {
+        background-color: var(--color-bg-2);
+        border-color: var(--color-text-1);
+
+        * {
+          color: var(--color-text-1);
+        }
+
+        &:hover {
+          border-color: var(--color-text-1);
+          * {
+            color: var(--color-bg-3);
+          }
+        }
+
+        &-active {
+          border-color: var(--color-bg-3);
+          * {
+            color: var(--color-bg-3);
+          }
+        }
+      }
+      &-disabled {
+        .ant-pagination-item-link {
+          background-color: var(--color-bg-2) !important;
+          border-color: var(--color-text-2) !important;
+          color: var(--color-text-2) !important;
+        }
+      }
+    }
+    .ant-pagination-item-ellipsis {
+      color: var(--color-text-1) !important;
+    }
+    .ant-pagination-item-container {
+      svg {
+        fill: var(--color-bg-3) !important;
+      }
+    }
+    .ant-select {
+      &-open {
+        .ant-select-selector {
+          border-color: var(--color-bg-3) !important;
+          color: var(--color-text-2) !important;
+          box-shadow: none !important;
+        }
+      }
+      &-dropdown {
+        border-color: var(--color-text-1);
+        color: var(--color-text-1) !important;
+        background-color: var(--color-bg-1);
+
+        .ant-select-item-option {
+          background-color: var(--color-bg-1);
+          border-color: var(--color-text-1) !important;
+          color: var(--color-text-1) !important;
+
+          &-selected {
+            color: var(--color-bg-3) !important;
+            background-color: var(--color-bg-1) !important;
+          }
+
+          &:hover {
+            color: var(--color-bg-3) !important;
+            background-color: var(--color-bg-2);
+          }
+        }
+      }
+      &-selector {
+        background-color: var(--color-bg-2) !important;
+        border-color: var(--color-text-1);
+        color: var(--color-text-1);
+
+        &:hover {
+          border-color: var(--color-bg-3) !important;
+        }
+      }
+    }
+  }
+}

@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Pagination } from 'antd';
 import { usePageState } from 'hooks/usePageState';
 import { getAllVideosAction } from 'redux/actions/videos';
 import { useAppSelector } from 'redux/hooks';
 
+import { Pagination } from 'components/Pagination';
 import { Spinner } from 'components/Spinner';
+import { Video } from 'components/Video';
 
 import css from './Videos.module.scss';
 
 export const Videos: React.VFC = () => {
   const dispatch = useDispatch();
 
-  const { fetchStatus, pageInfo } = useAppSelector((store) => store.videos);
+  const { fetchStatus, pageInfo, data } = useAppSelector((store) => store.videos);
   const user = useAppSelector((store) => store.userProfile);
 
   const [needResize, setNeedResize] = useState(false);
@@ -37,23 +38,32 @@ export const Videos: React.VFC = () => {
   }, [dispatch, pageState.page, pageState.size, user, needResize]);
 
   if (fetchStatus === 'error') {
-    return (
+    return <h1>Доступных видео пока нет :(</h1>;
+  }
+
+  return (
+    <div className={css.container}>
+      {fetchStatus === 'fetching' || !data ? (
+        <Spinner />
+      ) : (
+        <div className={css.videos}>
+          {data.map((v) => (
+            <Video data={v} key={`vid${v.id}`} />
+          ))}
+        </div>
+      )}
       <Pagination
         onChange={(p, s) => {
-          handleSetPage(p);
-          handleSetSize(s);
-          setNeedResize(true);
+          if (fetchStatus !== 'fetching') {
+            handleSetPage(p);
+            handleSetSize(s);
+            setNeedResize(true);
+          }
         }}
         current={pageState.page}
         total={pageInfo?.totalElements}
         pageSize={pageState.size}
       />
-    );
-  }
-
-  return (
-    <div className={css.container}>
-      {fetchStatus !== 'fetched' ? <Spinner /> : <h1>Доступных видео пока нет :(</h1>}
     </div>
   );
 };
