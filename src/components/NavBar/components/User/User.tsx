@@ -1,51 +1,67 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserProfile } from 'api/userProfile';
+import { UserEntity } from 'api_generated';
+import cn from 'classnames';
 
 import { Button } from 'components/Button';
 
 import css from './User.module.scss';
 
-type UserProps = {
+type NavBarProps = {
+  needAuthorities: true;
   user: UserProfile;
+  className?: string;
 };
 
-export const User: React.FC<UserProps> = ({ user }) => {
+type VidProps = {
+  needAuthorities: false;
+  user: UserEntity;
+  className?: string;
+};
+
+type UserProps = NavBarProps | VidProps;
+
+export const User: React.FC<UserProps> = ({ user, needAuthorities, className }) => {
   const navigate = useNavigate();
 
   const role = useMemo(() => {
-    const { authorities } = user;
+    if (needAuthorities) {
+      const { authorities } = user;
 
-    if (authorities?.some((v) => v.name === 'ADMIN')) {
-      return 'Модератор';
+      if (authorities?.some((v) => v.name === 'ADMIN')) {
+        return 'Модератор';
+      }
+
+      if (authorities?.some((v) => v.name === 'VIDEO_CREATOR')) {
+        return 'Контентмейкер';
+      }
+
+      return 'Пользователь';
     }
-
-    if (authorities?.some((v) => v.name === 'VIDEO_CREATOR')) {
-      return 'Контентмейкер';
-    }
-
-    return 'Пользователь';
-  }, [user]);
+  }, [user, needAuthorities]);
 
   return (
-    <div className={css.container}>
+    <div className={cn(css.container, className)}>
       <div className={css.userInfo}>
         <span className={css.username}>{user.username}</span>
         <span className={css.role}>{role}</span>
       </div>
       <img className={css.img} src={require('assets/jpg/user.jpeg')} />
-      <Button
-        size="s"
-        view="outlineSecondary"
-        onClick={() => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('username');
-          navigate('/auth');
-          window.location.reload();
-        }}
-      >
-        Выход
-      </Button>
+      {needAuthorities && (
+        <Button
+          size="s"
+          view="outlineSecondary"
+          onClick={() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            navigate('/auth');
+            window.location.reload();
+          }}
+        >
+          Выход
+        </Button>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type PageStateOptions = {
   page: number;
@@ -16,9 +16,12 @@ export const usePageState = (options: PageStateOptions) => {
   };
 
   const handleSetSize = (newSize: number) => {
-    setPage(1);
     setSize(newSize);
   };
+
+  useEffect(() => {
+    setPage(1);
+  }, [size]);
 
   return {
     pageState: { page, size },
