@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { EntityModelVideoEntity } from 'api_generated';
+import { VideoDto } from 'api/videos';
 
 import { PlayerModal } from './PlayerModal';
 import { Preview } from './Preview';
 
 export type VideoProps = {
-  data: EntityModelVideoEntity;
+  data: VideoDto;
 };
 
 export const Video: React.FC<VideoProps> = ({ data }) => {
