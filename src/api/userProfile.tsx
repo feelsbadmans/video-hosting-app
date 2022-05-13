@@ -4,10 +4,16 @@ import {
   CreateUserDto,
   EntityModelAuthorityEntity,
   EntityModelUserEntity,
+  EntityModelVideoEntity,
   LoginUserDto,
   UserEntityPropertyReferenceControllerApi,
   UserEntitySearchControllerApi,
+  VideoEntityResponse,
 } from 'api_generated';
+
+import { getThumbnail } from 'utils/videos';
+
+import { VideoDto } from './videos';
 
 const loginService = new AuthApiApi();
 const userService = new UserEntitySearchControllerApi();
@@ -40,40 +46,51 @@ export const register = async (options: CreateUserDto) => {
     });
 };
 
-export type UserProfile = Omit<EntityModelUserEntity, 'authorities'> & { authorities?: EntityModelAuthorityEntity[] };
+export type UserProfile = Omit<EntityModelUserEntity, 'authorities' | 'videos'> & {
+  authorities?: EntityModelAuthorityEntity[];
+  videos: VideoDto[];
+};
+
+type MyVideoResponse = VideoEntityResponse & {
+  _links?: EntityModelVideoEntity['_links'];
+};
+
+const getId = (v: MyVideoResponse) => Number((v?._links?.self.href as string).split('/').pop());
 
 export const getUserByUserName = (username: string): Promise<UserProfile> => {
-  const token = localStorage.getItem('token');
-
-  const options = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
   return userService
-    .executeSearchUserentityGet2(username, options)
+    .executeSearchUserentityGet2(username)
     .then((value) => {
-      const { username, id, accountNonExpired, accountNonLocked, enabled } = value.data;
+      const { username, id, accountNonExpired, accountNonLocked, enabled, _links } = value.data;
 
-      return { username, id, accountNonExpired, accountNonLocked, enabled } as UserProfile;
+      return { username, id, accountNonExpired, accountNonLocked, enabled, _links } as UserProfile;
     })
     .then(async (user) => {
       const id = String(user.id || 1);
 
-      await userPropertyService.followPropertyReferenceUserentityGet1(id, options).then((v) => {
+      await userPropertyService.followPropertyReferenceUserentityGet1(id).then((v) => {
         user.authorities = v.data._embedded?.authorityEntities;
       });
 
       if (user.authorities?.some((v) => v.name === AuthorityEntityNameEnum.OrdinaryUser)) {
-        await userPropertyService.followPropertyReferenceUserentityGet21(id, options).then((v) => {
+        await userPropertyService.followPropertyReferenceUserentityGet21(id).then((v) => {
           user.group = v.data;
         });
       }
 
       if (user.authorities?.some((v) => v.name === AuthorityEntityNameEnum.VideoCreator)) {
-        await userPropertyService.followPropertyReferenceUserentityGet31(id, options).then((v) => {
-          user.videos = v.data._embedded?.videoEntities || [];
+        await userPropertyService.followPropertyReferenceUserentityGet31(id).then((v) => {
+          user.videos =
+            v.data._embedded?.videoEntities
+              ?.map(
+                (v) =>
+                  ({
+                    ...v,
+                    id: getId(v as MyVideoResponse) || v.id,
+                    thumbnail: getThumbnail(v),
+                  } as VideoDto),
+              )
+              .sort((a, b) => (a?.id || 1) - (b?.id || 0)) || [];
         });
       }
 

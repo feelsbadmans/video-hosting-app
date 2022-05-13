@@ -42,5 +42,6 @@ export const useCommonRequests = (canFetch: boolean) => {
   return {
     error: userProfileErrorMsg,
     user: userProfileData,
+    fetchStatus: userProfileFetchStatus,
   };
 };

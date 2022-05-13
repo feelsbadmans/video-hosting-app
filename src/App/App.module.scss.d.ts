@@ -1,5 +1,6 @@
 export type Styles = {
   app: string;
+  center: string;
   layout: string;
 };
 

@@ -6,9 +6,11 @@ import { Preview } from './Preview';
 
 export type VideoProps = {
   data: VideoDto;
+  isEditable?: boolean;
+  onEditBtnClick?: (data: VideoDto) => void;
 };
 
-export const Video: React.FC<VideoProps> = ({ data }) => {
+export const Video: React.FC<VideoProps> = ({ isEditable = false, onEditBtnClick = () => undefined, data }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
@@ -17,10 +19,10 @@ export const Video: React.FC<VideoProps> = ({ data }) => {
 
   return (
     <>
-      {isOpen && <PlayerModal data={data} onClick={toggleOpen} />}
-      <div>
-        <Preview data={data} onClick={toggleOpen} />
-      </div>
+      {isOpen && (
+        <PlayerModal data={data} onClose={toggleOpen} isEditable={isEditable} onEditBtnClick={onEditBtnClick} />
+      )}
+      <Preview data={data} onClick={toggleOpen} />
     </>
   );
 };

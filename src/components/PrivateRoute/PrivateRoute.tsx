@@ -28,9 +28,58 @@ export const PrivateRoute: React.FC = ({ children }) => {
   const render = useCallback(() => {
     if (error) {
       return (
+        <div className={css.spinnerContainer}>
+          <div className={css.errorContainer}>
+            <h1 className={css.errorHeader}>Ошибка!</h1>
+            <p className={css.errorMessage}>{error}</p>
+            <p className={css.errorMessage}>
+              Попробуйте&nbsp;
+              <span
+                className={css.exitLink}
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  localStorage.removeItem('username');
+                  navigate('/auth');
+                  window.location.reload();
+                }}
+              >
+                перезайти
+              </span>
+              &nbsp;в приложение
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    if (!user?.enabled) {
+      <div className={css.spinnerContainer}>
         <div className={css.errorContainer}>
           <h1 className={css.errorHeader}>Ошибка!</h1>
-          <p className={css.errorMessage}>{error}</p>
+          <p className={css.errorMessage}>Данный аккаунт отключен</p>
+          <p className={css.errorMessage}>
+            Попробуйте&nbsp;
+            <span
+              className={css.exitLink}
+              onClick={() => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                navigate('/auth');
+              }}
+            >
+              перезайти
+            </span>
+            &nbsp;в приложение
+          </p>
+        </div>
+      </div>;
+    }
+
+    if (!user?.accountNonExpired || !user.accountNonLocked) {
+      <div className={css.spinnerContainer}>
+        <div className={css.errorContainer}>
+          <h1 className={css.errorHeader}>Ошибка!</h1>
+          <p className={css.errorMessage}>Данный аккаунт заблокирован</p>
           <p className={css.errorMessage}>
             Попробуйте&nbsp;
             <span
@@ -47,49 +96,6 @@ export const PrivateRoute: React.FC = ({ children }) => {
             &nbsp;в приложение
           </p>
         </div>
-      );
-    }
-
-    if (!user?.enabled) {
-      <div className={css.errorContainer}>
-        <h1 className={css.errorHeader}>Ошибка!</h1>
-        <p className={css.errorMessage}>Данный аккаунт отключен</p>
-        <p className={css.errorMessage}>
-          Попробуйте&nbsp;
-          <span
-            className={css.exitLink}
-            onClick={() => {
-              localStorage.removeItem('token');
-              localStorage.removeItem('username');
-              navigate('/auth');
-            }}
-          >
-            перезайти
-          </span>
-          &nbsp;в приложение
-        </p>
-      </div>;
-    }
-
-    if (!user?.accountNonExpired || !user.accountNonLocked) {
-      <div className={css.errorContainer}>
-        <h1 className={css.errorHeader}>Ошибка!</h1>
-        <p className={css.errorMessage}>Данный аккаунт заблокирован</p>
-        <p className={css.errorMessage}>
-          Попробуйте&nbsp;
-          <span
-            className={css.exitLink}
-            onClick={() => {
-              localStorage.removeItem('token');
-              localStorage.removeItem('username');
-              navigate('/auth');
-              window.location.reload();
-            }}
-          >
-            перезайти
-          </span>
-          &nbsp;в приложение
-        </p>
       </div>;
     }
 
@@ -103,8 +109,10 @@ export const PrivateRoute: React.FC = ({ children }) => {
     }
 
     return (
-      <div className={css.spinner}>
-        <Spinner theme={'light'} />
+      <div className={css.spinnerContainer}>
+        <div className={css.spinner}>
+          <Spinner theme={'light'} />
+        </div>
       </div>
     );
   }, [error, user, navigate, children]);
