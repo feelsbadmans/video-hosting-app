@@ -14,7 +14,7 @@ import { Textarea } from 'components/Textarea';
 
 import { VideoFormType } from './types';
 import { getInitGroups } from './utils';
-import { validateVideoForm } from './validate';
+import { validateEditVideoForm, validateVideoForm } from './validate';
 
 import css from './UploadModal.module.scss';
 
@@ -167,7 +167,11 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
 
   return (
     <Modal onClose={onClose}>
-      <Form<VideoFormType> initialValues={initialValues} onSubmit={onSubmit} validate={validateVideoForm}>
+      <Form<VideoFormType>
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validate={video ? validateEditVideoForm : validateVideoForm}
+      >
         {({ handleSubmit, values }) => (
           <form onSubmit={handleSubmit}>
             <div className={css.form}>
