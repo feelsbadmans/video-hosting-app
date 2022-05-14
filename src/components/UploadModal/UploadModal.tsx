@@ -8,6 +8,7 @@ import { useAppSelector } from 'redux/hooks';
 import { Button } from 'components/Button';
 import { Input } from 'components/Input';
 import { Modal } from 'components/Modal';
+import { Select } from 'components/Select';
 import { Textarea } from 'components/Textarea';
 
 import { VideoFormType } from './types';
@@ -16,6 +17,16 @@ import { validateVideoForm } from './validate';
 import css from './UploadModal.module.scss';
 
 type UploadModalProps = { video?: VideoDto; onClose: () => void };
+
+const groups = [
+  { label: 'IU5', value: 'IU5-biba' },
+  { label: 'IU6', value: 'IU6-biba' },
+  { label: 'IU1', value: 'IU1-biba' },
+  { label: 'IU2', value: 'IU2-biba' },
+  { label: 'IU3', value: 'IU3-biba' },
+  { label: 'IU4', value: 'IU4-biba' },
+  { label: 'IU7', value: 'IU7-biba' },
+];
 
 //TODO: добавить редактирование по группам
 
@@ -44,7 +55,11 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose }) => {
   const { fetchStatus, data: userProfile } = useAppSelector((state) => state.userProfile);
 
   const initialValues = useMemo(
-    () => (video ? { name: video.name, description: video.description } : undefined),
+    () => ({
+      name: video?.name || '',
+      description: video?.description || '',
+      allowedGroups: [],
+    }),
     [video],
   );
 
@@ -114,6 +129,13 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose }) => {
           value={filename}
         />
         <Textarea name="description" label="Описание" placeholder="введите описание" />
+        <Select
+          name="allowedGroups"
+          label="Доступно для групп"
+          placeholder="выберите группы"
+          mode="multiple"
+          data={groups}
+        />
         <Button view="primary" size="m" type="submit" isLoading={loadingRef.current}>
           Загрузить
         </Button>
