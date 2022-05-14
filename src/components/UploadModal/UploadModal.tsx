@@ -112,7 +112,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
             onChange={handleChangeFile}
           />
         )}
-        {!videoFile && <Input name="videoLink" label="Ссылка на видео" placeholder="вставьте ссылку на видео" />}
+        {!videoFile && <Input name="source" label="Ссылка на видео" placeholder="вставьте ссылку на видео" />}
         <Input
           name="name"
           label="Название"
