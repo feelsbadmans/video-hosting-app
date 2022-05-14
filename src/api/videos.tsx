@@ -31,16 +31,24 @@ const addAuthor = (authorUrl: string, videoId: number) => {
   return otherAxios.put(`/videos/${videoId}/author`, authorUrl);
 };
 
-type DownloadVideoOptions = { name: string; description: string; source: string; file?: File };
-
-export const downloadVideo = async (options: DownloadVideoOptions, authorUrl: string) => {
-  const source = options.source || '';
-  const video = await videoService.postCollectionResourceVideoentityPost({ ...options, source });
-  await addAuthor(authorUrl, video.data.id as number);
+const addGroups = (groups: string[], videoId: number) => {
+  return otherAxios.put(`/videos/${videoId}/allowedGroups`, groups.join('\n'));
 };
 
-export const editVideo = async (options: DownloadVideoOptions, id: number) => {
+type UploadVideoOptions = { name: string; description: string; source: string; file?: File };
+
+export const uploadVideo = async (options: UploadVideoOptions, authorUrl: string, groups: string[]) => {
+  const source = options.source || '';
+  //TODO: сделать загрузку обычных видео
+  const video = await videoService.postCollectionResourceVideoentityPost({ ...options, source });
+  const id = video.data.id as number;
+  await addAuthor(authorUrl, id);
+  await addGroups(groups, id);
+};
+
+export const editVideo = async (options: UploadVideoOptions, id: number, groups: string[]) => {
   await videoService.patchItemResourceVideoentityPatch(String(id), { ...options });
+  await addGroups(groups, id);
 };
 
 export const deleteVideo = async (id: number) => {

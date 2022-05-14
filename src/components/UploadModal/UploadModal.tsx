@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
-import { deleteVideo, downloadVideo, editVideo, VideoDto } from 'api/videos';
+import { LabeledValue } from 'antd/lib/select';
+import { deleteVideo, editVideo, uploadVideo, VideoDto } from 'api/videos';
 import { getUserProfileAction } from 'redux/actions/userProfile';
 import { useAppSelector } from 'redux/hooks';
 
@@ -12,25 +13,14 @@ import { Select } from 'components/Select';
 import { Textarea } from 'components/Textarea';
 
 import { VideoFormType } from './types';
+import { getInitGroups } from './utils';
 import { validateVideoForm } from './validate';
 
 import css from './UploadModal.module.scss';
 
-type UploadModalProps = { video?: VideoDto; onClose: () => void };
+type UploadModalProps = { video?: VideoDto; onClose: () => void; groups: LabeledValue[] };
 
-const groups = [
-  { label: 'IU5', value: 'IU5-biba' },
-  { label: 'IU6', value: 'IU6-biba' },
-  { label: 'IU1', value: 'IU1-biba' },
-  { label: 'IU2', value: 'IU2-biba' },
-  { label: 'IU3', value: 'IU3-biba' },
-  { label: 'IU4', value: 'IU4-biba' },
-  { label: 'IU7', value: 'IU7-biba' },
-];
-
-//TODO: добавить редактирование по группам
-
-export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose }) => {
+export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups }) => {
   const dispatch = useDispatch();
 
   const loadingRef = useRef(false);
@@ -58,7 +48,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose }) => {
     () => ({
       name: video?.name || '',
       description: video?.description || '',
-      allowedGroups: [],
+      allowedGroups: getInitGroups(video?.allowedGroups),
     }),
     [video],
   );
@@ -74,9 +64,10 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose }) => {
             source: video.source,
           },
           video.id as number,
+          values.allowedGroups || [],
         );
       } else {
-        await downloadVideo(
+        await uploadVideo(
           {
             name: values.name,
             description: values.description || '',
@@ -84,6 +75,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose }) => {
             file: videoFile,
           },
           userProfile?._links?.self.href || 'https://video-hosting-back.herokuapp.com/users/3',
+          values.allowedGroups || [],
         );
       }
       loadingRef.current = false;
@@ -154,6 +146,13 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose }) => {
           value={filename}
         />
         <Textarea name="description" label="Описание" placeholder="введите описание" />
+        <Select
+          name="allowedGroups"
+          label="Доступно для групп"
+          placeholder="выберите группы"
+          mode="multiple"
+          data={groups}
+        />
         <div className={css.buttonsContainer}>
           <Button view="primary" size="m" type="submit" isLoading={loadingRef.current}>
             Редактировать

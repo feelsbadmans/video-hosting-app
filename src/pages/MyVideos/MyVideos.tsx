@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { LabeledValue } from 'antd/lib/select';
+import { getAllGroups } from 'api/utilsApis';
 import { VideoDto } from 'api/videos';
 import { usePageState } from 'hooks/usePageState';
-// import { useDispatch } from 'react-redux';
-// import { usePageState } from 'hooks/usePageState';
-// import { getAllVideosAction } from 'redux/actions/videos';
 import { useAppSelector } from 'redux/hooks';
 
 import { Button } from 'components/Button';
@@ -15,7 +14,7 @@ import { Video } from 'components/Video';
 import css from './MyVideos.module.scss';
 
 export const MyVideos: React.VFC = () => {
-  // const dispatch = useDispatch();
+  const loadingRef = useRef(false);
 
   const { data, fetchStatus } = useAppSelector((store) => store.userProfile);
 
@@ -24,13 +23,25 @@ export const MyVideos: React.VFC = () => {
 
   const { pageState, handleSetPage } = usePageState({ page: 1, size: 18 });
 
+  const [userGroups, setUserGroups] = useState<LabeledValue[]>([]);
+
+  useEffect(() => {
+    const getGroups = async () => {
+      loadingRef.current = true;
+      const groups = await getAllGroups();
+      loadingRef.current = false;
+      setUserGroups(groups || []);
+    };
+    void getGroups();
+  }, []);
+
   if (fetchStatus === 'error') {
     return <h1>Доступных видео пока нет :(</h1>;
   }
 
   return (
     <div className={css.container}>
-      {fetchStatus === 'fetching' || !data ? (
+      {fetchStatus === 'fetching' || loadingRef.current || !data ? (
         <div className={css.spinner}>
           <Spinner theme="light" />
         </div>
@@ -57,6 +68,7 @@ export const MyVideos: React.VFC = () => {
       {downloadModalVisible && (
         <UploadModal
           video={selectedVideo}
+          groups={userGroups}
           onClose={() => {
             setSelectedVideo(undefined);
             setUploadModalVisible(false);
