@@ -7,9 +7,9 @@ import { usePageState } from 'hooks/usePageState';
 import { useAppSelector } from 'redux/hooks';
 
 import { Button } from 'components/Button';
-import { DownloadModal } from 'components/DownloadModal';
 import { Pagination } from 'components/Pagination';
 import { Spinner } from 'components/Spinner';
+import { UploadModal } from 'components/UploadModal';
 import { Video } from 'components/Video';
 
 import css from './MyVideos.module.scss';
@@ -19,7 +19,7 @@ export const MyVideos: React.VFC = () => {
 
   const { data, fetchStatus } = useAppSelector((store) => store.userProfile);
 
-  const [downloadModalVisible, setDownloadModalVisible] = useState(false);
+  const [downloadModalVisible, setUploadModalVisible] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoDto | undefined>(undefined);
 
   const { pageState, handleSetPage } = usePageState({ page: 1, size: 18 });
@@ -36,7 +36,7 @@ export const MyVideos: React.VFC = () => {
         </div>
       ) : (
         <div className={css.videos}>
-          <Button className={css.buttonDownload} onClick={() => setDownloadModalVisible(true)}>
+          <Button className={css.buttonUpload} onClick={() => setUploadModalVisible(true)}>
             Загрузить видео
           </Button>
           {data.videos.map((v) => (
@@ -47,7 +47,7 @@ export const MyVideos: React.VFC = () => {
               onEditBtnClick={(v) => {
                 {
                   setSelectedVideo(v);
-                  setDownloadModalVisible(true);
+                  setUploadModalVisible(true);
                 }
               }}
             />
@@ -55,11 +55,11 @@ export const MyVideos: React.VFC = () => {
         </div>
       )}
       {downloadModalVisible && (
-        <DownloadModal
+        <UploadModal
           video={selectedVideo}
           onClose={() => {
             setSelectedVideo(undefined);
-            setDownloadModalVisible(false);
+            setUploadModalVisible(false);
           }}
         />
       )}

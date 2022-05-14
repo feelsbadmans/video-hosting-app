@@ -1,1 +1,0 @@
-export { DownloadModal } from './DownloadModal';

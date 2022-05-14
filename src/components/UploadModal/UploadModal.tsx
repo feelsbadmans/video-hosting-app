@@ -13,13 +13,13 @@ import { Textarea } from 'components/Textarea';
 import { VideoFormType } from './types';
 import { validateVideoForm } from './validate';
 
-import css from './DownloadModal.module.scss';
+import css from './UploadModal.module.scss';
 
-type DownloadModalProps = { video?: VideoDto; onClose: () => void };
+type UploadModalProps = { video?: VideoDto; onClose: () => void };
 
 //TODO: добавить редактирование по группам
 
-export const DownloadModal: React.FC<DownloadModalProps> = ({ video, onClose }) => {
+export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose }) => {
   const dispatch = useDispatch();
 
   const loadingRef = useRef(false);
@@ -92,7 +92,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({ video, onClose }) 
     }
   }, [fetchStatus, onClose]);
 
-  const renderDownload = (values: VideoFormType) => {
+  const renderUpload = (values: VideoFormType) => {
     return (
       <>
         {!values.source && (
@@ -150,7 +150,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({ video, onClose }) 
         {({ handleSubmit, values }) => (
           <form onSubmit={handleSubmit}>
             <div className={css.form}>
-              {!video && renderDownload(values)}
+              {!video && renderUpload(values)}
               {video && renderEdit()}
             </div>
           </form>
