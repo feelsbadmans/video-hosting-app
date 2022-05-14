@@ -1,0 +1,1 @@
+export { TextareaCore } from './TextareaCore';

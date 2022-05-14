@@ -1,33 +1,28 @@
 import React from 'react';
 import { FieldInputProps, FieldMetaState } from 'react-final-form';
-import { InputProps } from 'antd';
 import cn from 'classnames';
 
 import { ErrorWrapper } from 'components/ErrorWrapper';
 
-import css from './InputCore.module.scss';
+import css from './TextareaCore.module.scss';
 
-type InputCoreProps = {
+type TextareaCoreProps = {
   input: FieldInputProps<string, HTMLElement>;
   meta: FieldMetaState<string>;
   label: string;
   placeholder?: string;
-  type?: InputProps['type'];
-  accept?: InputProps['accept'];
 };
 
-export const InputCore: React.FC<InputCoreProps> = ({ input, meta, label, placeholder = '', type, accept }) => {
+export const TextareaCore: React.FC<TextareaCoreProps> = ({ input, meta, label, placeholder = '' }) => {
   const error = meta.error && meta.submitFailed && !meta.modifiedSinceLastSubmit ? (meta.error as string) : '';
 
   return (
     <div className={css.container}>
       <label className={css.label}>{label}</label>
       <ErrorWrapper error={error}>
-        <input
+        <textarea
           className={cn(css.input, (meta.active && css.focused) as string)}
-          type={type}
           placeholder={placeholder}
-          accept={accept}
           {...input}
         />
       </ErrorWrapper>

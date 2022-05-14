@@ -18,7 +18,7 @@ export const Videos: React.VFC = () => {
 
   const [needResize, setNeedResize] = useState(false);
 
-  const { pageState, handleSetPage, handleSetSize } = usePageState({ page: 1, size: 20 });
+  const { pageState, handleSetPage, handleSetSize } = usePageState({ page: 1, size: 18 });
 
   useEffect(() => {
     if (fetchStatus === 'initial' && user.fetchStatus === 'fetched' && user.data?.group) {
@@ -44,11 +44,13 @@ export const Videos: React.VFC = () => {
   return (
     <div className={css.container}>
       {fetchStatus === 'fetching' || !data ? (
-        <Spinner />
+        <div className={css.spinner}>
+          <Spinner theme="light" />
+        </div>
       ) : (
         <div className={css.videos}>
           {data.map((v) => (
-            <Video data={v} key={`vid${v.id}`} />
+            <Video data={v} key={v._links?.self.href || v.source} />
           ))}
         </div>
       )}
