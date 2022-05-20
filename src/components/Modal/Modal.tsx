@@ -5,12 +5,15 @@ import css from './Modal.module.scss';
 
 type ModalProps = {
   onClose: () => void;
+  needOutsideClick?: boolean;
 };
 
-export const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
+export const Modal: React.FC<ModalProps> = ({ children, onClose, needOutsideClick = true }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  useOutsideClick({ containerRef: ref, handleClose: onClose });
+  const handleClose = needOutsideClick ? onClose : undefined;
+
+  useOutsideClick({ containerRef: ref, handleClose });
 
   return (
     <div className={css.globalContainer}>

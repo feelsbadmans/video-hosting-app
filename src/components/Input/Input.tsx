@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Field, FieldInputProps, useForm } from 'react-final-form';
+import { Field, FieldInputProps } from 'react-final-form';
 import { InputProps as AntInputProps } from 'antd';
 import { FieldValidator } from 'final-form';
 
@@ -17,17 +17,14 @@ type InputProps = {
 };
 
 export const Input: React.FC<InputProps> = ({ name, validate, label, placeholder, type, accept, onChange, value }) => {
-  const { change } = useForm();
-
   const handleChange = useCallback(
     (callback: FieldInputProps<string, HTMLElement>['onChange']) => (e: React.ChangeEvent<HTMLInputElement>) => {
       callback(e);
-      change(name, e.target.value);
       if (onChange) {
         onChange(e);
       }
     },
-    [onChange, change, name],
+    [onChange],
   );
 
   return (

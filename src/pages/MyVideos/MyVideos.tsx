@@ -18,7 +18,7 @@ export const MyVideos: React.VFC = () => {
 
   const { data, fetchStatus } = useAppSelector((store) => store.userProfile);
 
-  const [downloadModalVisible, setUploadModalVisible] = useState(false);
+  const [uploadModalVisible, setUploadModalVisible] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoDto | undefined>(undefined);
 
   const { pageState, handleSetPage } = usePageState({ page: 1, size: 18 });
@@ -41,7 +41,7 @@ export const MyVideos: React.VFC = () => {
 
   return (
     <div className={css.container}>
-      {fetchStatus === 'fetching' || loadingRef.current || !data ? (
+      {loadingRef.current || !data ? (
         <div className={css.spinner}>
           <Spinner theme="light" />
         </div>
@@ -61,11 +61,12 @@ export const MyVideos: React.VFC = () => {
                   setUploadModalVisible(true);
                 }
               }}
+              needOutsideClick={!uploadModalVisible}
             />
           ))}
         </div>
       )}
-      {downloadModalVisible && (
+      {uploadModalVisible && (
         <UploadModal
           video={selectedVideo}
           groups={userGroups}

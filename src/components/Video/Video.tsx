@@ -8,9 +8,15 @@ export type VideoProps = {
   data: VideoDto;
   isEditable?: boolean;
   onEditBtnClick?: (data: VideoDto) => void;
+  needOutsideClick?: boolean;
 };
 
-export const Video: React.FC<VideoProps> = ({ isEditable = false, onEditBtnClick = () => undefined, data }) => {
+export const Video: React.FC<VideoProps> = ({
+  isEditable = false,
+  onEditBtnClick = () => undefined,
+  needOutsideClick = true,
+  data,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
@@ -20,7 +26,13 @@ export const Video: React.FC<VideoProps> = ({ isEditable = false, onEditBtnClick
   return (
     <>
       {isOpen && (
-        <PlayerModal data={data} onClose={toggleOpen} isEditable={isEditable} onEditBtnClick={onEditBtnClick} />
+        <PlayerModal
+          data={data}
+          onClose={toggleOpen}
+          isEditable={isEditable}
+          onEditBtnClick={onEditBtnClick}
+          needOutsideClick={needOutsideClick}
+        />
       )}
       <Preview data={data} onClick={toggleOpen} />
     </>

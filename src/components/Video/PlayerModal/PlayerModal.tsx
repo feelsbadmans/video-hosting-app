@@ -14,9 +14,16 @@ type PlayerModalProps = VideoProps & {
   onClose: () => void;
   isEditable: boolean;
   onEditBtnClick: (data: VideoDto) => void;
+  needOutsideClick?: boolean;
 };
 
-export const PlayerModal: React.FC<PlayerModalProps> = ({ data, onClose, isEditable, onEditBtnClick }) => {
+export const PlayerModal: React.FC<PlayerModalProps> = ({
+  data,
+  onClose,
+  isEditable,
+  onEditBtnClick,
+  needOutsideClick,
+}) => {
   const getVideo = () => {
     let src = '';
     if (data.source.includes('youtube')) {
@@ -32,12 +39,11 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({ data, onClose, isEdita
   };
 
   const handleEditClick = useCallback(() => {
-    onClose();
     onEditBtnClick(data);
-  }, [data, onClose, onEditBtnClick]);
+  }, [data, onEditBtnClick]);
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} needOutsideClick={needOutsideClick}>
       <div className={css.container}>
         {getVideo()}
         <h3 className={css.name}>{data.name}</h3>
