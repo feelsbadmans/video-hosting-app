@@ -644,6 +644,19 @@ export interface EntityModelVideoEntity {
 /**
  *
  * @export
+ * @interface InlineObject
+ */
+export interface InlineObject {
+  /**
+   *
+   * @type {any}
+   * @memberof InlineObject
+   */
+  file: any;
+}
+/**
+ *
+ * @export
  * @interface Item
  */
 export interface Item {
@@ -2550,6 +2563,407 @@ export class ProfileControllerApi extends BaseAPI {
   public listAllFormsOfMetadata1(options?: AxiosRequestConfig) {
     return ProfileControllerApiFp(this.configuration)
       .listAllFormsOfMetadata1(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+}
+
+/**
+ * StorageApiApi - axios parameter creator
+ * @export
+ */
+export const StorageApiApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteFile: async (bucket: string, file: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'bucket' is not null or undefined
+      assertParamExists('deleteFile', 'bucket', bucket);
+      // verify required parameter 'file' is not null or undefined
+      assertParamExists('deleteFile', 'file', file);
+      const localVarPath = `/storage/{bucket}/{file}`
+        .replace(`{${'bucket'}}`, encodeURIComponent(String(bucket)))
+        .replace(`{${'file'}}`, encodeURIComponent(String(file)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    downloadFile: async (bucket: string, file: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'bucket' is not null or undefined
+      assertParamExists('downloadFile', 'bucket', bucket);
+      // verify required parameter 'file' is not null or undefined
+      assertParamExists('downloadFile', 'file', file);
+      const localVarPath = `/storage/{bucket}/{file}`
+        .replace(`{${'bucket'}}`, encodeURIComponent(String(bucket)))
+        .replace(`{${'file'}}`, encodeURIComponent(String(file)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFileList: async (bucket: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'bucket' is not null or undefined
+      assertParamExists('getFileList', 'bucket', bucket);
+      const localVarPath = `/storage/{bucket}`.replace(`{${'bucket'}}`, encodeURIComponent(String(bucket)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFileUrl: async (bucket: string, file: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'bucket' is not null or undefined
+      assertParamExists('getFileUrl', 'bucket', bucket);
+      // verify required parameter 'file' is not null or undefined
+      assertParamExists('getFileUrl', 'file', file);
+      const localVarPath = `/storage/{bucket}/{file}/url`
+        .replace(`{${'bucket'}}`, encodeURIComponent(String(bucket)))
+        .replace(`{${'file'}}`, encodeURIComponent(String(file)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {InlineObject} [inlineObject]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    uploadFile: async (
+      bucket: string,
+      inlineObject?: InlineObject,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'bucket' is not null or undefined
+      assertParamExists('uploadFile', 'bucket', bucket);
+      const localVarPath = `/storage/{bucket}`.replace(`{${'bucket'}}`, encodeURIComponent(String(bucket)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(inlineObject, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
+};
+
+/**
+ * StorageApiApi - functional programming interface
+ * @export
+ */
+export const StorageApiApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = StorageApiApiAxiosParamCreator(configuration);
+  return {
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deleteFile(
+      bucket: string,
+      file: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteFile(bucket, file, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async downloadFile(
+      bucket: string,
+      file: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.downloadFile(bucket, file, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getFileList(
+      bucket: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getFileList(bucket, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getFileUrl(
+      bucket: string,
+      file: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getFileUrl(bucket, file, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {InlineObject} [inlineObject]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async uploadFile(
+      bucket: string,
+      inlineObject?: InlineObject,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.uploadFile(bucket, inlineObject, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+  };
+};
+
+/**
+ * StorageApiApi - factory interface
+ * @export
+ */
+export const StorageApiApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+  const localVarFp = StorageApiApiFp(configuration);
+  return {
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteFile(bucket: string, file: string, options?: any): AxiosPromise<object> {
+      return localVarFp.deleteFile(bucket, file, options).then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    downloadFile(bucket: string, file: string, options?: any): AxiosPromise<Array<string>> {
+      return localVarFp.downloadFile(bucket, file, options).then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFileList(bucket: string, options?: any): AxiosPromise<Array<string>> {
+      return localVarFp.getFileList(bucket, options).then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {string} file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFileUrl(bucket: string, file: string, options?: any): AxiosPromise<string> {
+      return localVarFp.getFileUrl(bucket, file, options).then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {string} bucket
+     * @param {InlineObject} [inlineObject]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    uploadFile(bucket: string, inlineObject?: InlineObject, options?: any): AxiosPromise<object> {
+      return localVarFp.uploadFile(bucket, inlineObject, options).then((request) => request(axios, basePath));
+    },
+  };
+};
+
+/**
+ * StorageApiApi - object-oriented interface
+ * @export
+ * @class StorageApiApi
+ * @extends {BaseAPI}
+ */
+export class StorageApiApi extends BaseAPI {
+  /**
+   *
+   * @param {string} bucket
+   * @param {string} file
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StorageApiApi
+   */
+  public deleteFile(bucket: string, file: string, options?: AxiosRequestConfig) {
+    return StorageApiApiFp(this.configuration)
+      .deleteFile(bucket, file, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {string} bucket
+   * @param {string} file
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StorageApiApi
+   */
+  public downloadFile(bucket: string, file: string, options?: AxiosRequestConfig) {
+    return StorageApiApiFp(this.configuration)
+      .downloadFile(bucket, file, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {string} bucket
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StorageApiApi
+   */
+  public getFileList(bucket: string, options?: AxiosRequestConfig) {
+    return StorageApiApiFp(this.configuration)
+      .getFileList(bucket, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {string} bucket
+   * @param {string} file
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StorageApiApi
+   */
+  public getFileUrl(bucket: string, file: string, options?: AxiosRequestConfig) {
+    return StorageApiApiFp(this.configuration)
+      .getFileUrl(bucket, file, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {string} bucket
+   * @param {InlineObject} [inlineObject]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StorageApiApi
+   */
+  public uploadFile(bucket: string, inlineObject?: InlineObject, options?: AxiosRequestConfig) {
+    return StorageApiApiFp(this.configuration)
+      .uploadFile(bucket, inlineObject, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }

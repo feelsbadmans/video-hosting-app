@@ -28,7 +28,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({ data, onClose, isEdita
 
     //TODO обработка обычного видео
 
-    return null;
+    return <video id="noplayer" className={css.video} src={data.source} controls preload="auto" />;
   };
 
   const handleEditClick = useCallback(() => {

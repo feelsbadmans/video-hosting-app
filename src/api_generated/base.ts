@@ -15,7 +15,7 @@
 import { Configuration } from './configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { globalAxios } from 'api/axios';
 
 export const BASE_PATH = 'https://video-hosting-back.herokuapp.com'.replace(/\/+$/, '');

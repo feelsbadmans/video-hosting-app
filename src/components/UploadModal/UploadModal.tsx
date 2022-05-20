@@ -59,7 +59,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
       if (video) {
         await editVideo(
           {
-            name: values.name,
+            name: filename,
             description: values.description || '',
             source: video.source,
           },
@@ -69,7 +69,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
       } else {
         await uploadVideo(
           {
-            name: values.name,
+            name: filename,
             description: values.description || '',
             source: values.source || '',
             file: videoFile,
@@ -81,7 +81,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
       loadingRef.current = false;
       dispatch(getUserProfileAction(userProfile?.username || 'admin'));
     },
-    [videoFile, userProfile, dispatch, video],
+    [video, dispatch, userProfile?.username, userProfile?._links?.self.href, filename, videoFile],
   );
 
   const onDelete = useCallback(async () => {
@@ -170,7 +170,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
       <Form<VideoFormType>
         initialValues={initialValues}
         onSubmit={onSubmit}
-        validate={video ? validateEditVideoForm : validateVideoForm}
+        validate={video ? validateEditVideoForm(filename) : validateVideoForm(filename)}
       >
         {({ handleSubmit, values }) => (
           <form onSubmit={handleSubmit}>

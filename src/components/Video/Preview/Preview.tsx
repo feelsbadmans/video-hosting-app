@@ -9,7 +9,11 @@ type PreviewProps = VideoProps & { onClick: () => void };
 export const Preview: React.FC<PreviewProps> = ({ data, onClick }) => {
   return (
     <div className={css.container} onClick={onClick}>
-      <img src={data.thumbnail} className={css.img} />
+      {data.thumbnail.includes('videolectures') ? (
+        <video src={data.thumbnail} className={css.img} />
+      ) : (
+        <img src={data.thumbnail} className={css.img} />
+      )}
       <div className={css.text}>
         <span className={css.name} title={data.name}>
           {data.name}

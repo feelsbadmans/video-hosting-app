@@ -2,7 +2,7 @@ import { EntityModelVideoEntity, PageMetadata, UserGroupEntity, VideoEntityEntit
 
 import { getThumbnail } from 'utils/videos';
 
-import { otherAxios } from './axios';
+import { fileAxios, otherAxios } from './axios';
 
 // const service = new VideoEntitySearchControllerApi();
 const videoService = new VideoEntityEntityControllerApi();
@@ -35,11 +35,23 @@ const addGroups = (groups: string[], videoId: number) => {
   return otherAxios.put(`/videos/${videoId}/allowedGroups`, groups.join('\n'));
 };
 
+const uploadFile = (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return fileAxios.post('/storage/videolectures2', formData);
+};
+
 type UploadVideoOptions = { name: string; description: string; source: string; file?: File };
 
 export const uploadVideo = async (options: UploadVideoOptions, authorUrl: string, groups: string[]) => {
-  const source = options.source || '';
-  //TODO: сделать загрузку обычных видео
+  let source = options.source;
+  if (options.file) {
+    const res = await uploadFile(options.file);
+    source = await res.data;
+    delete options.file;
+  }
+
   const video = await videoService.postCollectionResourceVideoentityPost({ ...options, source });
   const id = video.data.id as number;
   await addAuthor(authorUrl, id);

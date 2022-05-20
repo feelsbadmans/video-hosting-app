@@ -33,6 +33,31 @@ const getYoutubeThumbnail = (url: string, quality: Quality) => {
   return '';
 };
 
+// const getNormalThumbnail = (src: string) => {
+//   const videoPlayer = document.createElement('video');
+//   videoPlayer.setAttribute('src', src);
+//   videoPlayer.load();
+//   // load metadata of the video to get video duration and dimensions
+//   videoPlayer.addEventListener('loadedmetadata', () => {
+//     setTimeout(() => {
+//       videoPlayer.currentTime = videoPlayer.duration / 2;
+//     }, 200);
+//     // extract video thumbnail once seeking is complete
+//     videoPlayer.addEventListener('seeked', () => {
+//       // define a canvas to have the same dimension as the video
+//       const canvas = document.createElement('canvas');
+//       canvas.width = videoPlayer.videoWidth;
+//       canvas.height = videoPlayer.videoHeight;
+//       // draw the video frame to canvas
+//       const ctx = canvas.getContext('2d');
+//       ctx?.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+//       // return the canvas image as a blob
+
+//       return canvas.toDataURL('image/jpeg');
+//     });
+//   });
+// };
+
 export const getThumbnail = (data: EntityModelVideoEntity) => {
   if (data.source.includes('youtube')) {
     const thumbnail = getYoutubeThumbnail(data.source, 'medium');
@@ -40,7 +65,5 @@ export const getThumbnail = (data: EntityModelVideoEntity) => {
     return thumbnail;
   }
 
-  //TODO обработка обычного видео
-
-  return '';
+  return data.source;
 };
