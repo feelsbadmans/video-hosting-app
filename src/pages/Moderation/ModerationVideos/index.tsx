@@ -1,0 +1,1 @@
+export { ModerationVideos } from './ModerationVideos';

@@ -3,6 +3,7 @@ import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { LabeledValue } from 'antd/lib/select';
 import { deleteVideo, editVideo, uploadVideo, VideoDto } from 'api/videos';
+import { setErrorAction } from 'redux/actions/error';
 import { getUserProfileAction } from 'redux/actions/userProfile';
 import { useAppSelector } from 'redux/hooks';
 
@@ -65,7 +66,10 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
           },
           video.id as number,
           values.allowedGroups || [],
-        );
+        ).catch((e) => {
+          loadingRef.current = false;
+          dispatch(setErrorAction(e.response?.data?.errorMessage ?? e.message));
+        });
       } else {
         await uploadVideo(
           {
@@ -76,7 +80,10 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
           },
           userProfile?._links?.self.href || 'https://video-hosting-back.herokuapp.com/users/3',
           values.allowedGroups || [],
-        );
+        ).catch((e) => {
+          loadingRef.current = false;
+          dispatch(setErrorAction(e.response?.data?.errorMessage ?? e.message));
+        });
       }
       loadingRef.current = false;
       dispatch(getUserProfileAction(userProfile?.username || 'admin'));
@@ -87,7 +94,10 @@ export const UploadModal: React.FC<UploadModalProps> = ({ video, onClose, groups
   const onDelete = useCallback(async () => {
     deleteRef.current = true;
     if (video) {
-      await deleteVideo(video.id as number);
+      await deleteVideo(video.id as number).catch((e) => {
+        deleteRef.current = false;
+        dispatch(setErrorAction(e.response?.data?.errorMessage ?? e.message));
+      });
     }
     deleteRef.current = false;
     dispatch(getUserProfileAction(userProfile?.username || 'admin'));

@@ -51,19 +51,19 @@ export type UserProfile = Omit<EntityModelUserEntity, 'authorities' | 'videos'> 
   videos: VideoDto[];
 };
 
-type MyVideoResponse = VideoEntityResponse & {
+export type MyVideoResponse = VideoEntityResponse & {
   _links?: EntityModelVideoEntity['_links'];
 };
 
-const getId = (v: MyVideoResponse) => Number((v?._links?.self.href as string).split('/').pop());
+export const getId = (v: MyVideoResponse) => Number((v?._links?.self.href as string).split('/').pop());
 
 export const getUserByUserName = (username: string): Promise<UserProfile> => {
   return userService
     .executeSearchUserentityGet2(username)
     .then((value) => {
-      const { username, id, accountNonExpired, accountNonLocked, enabled, _links } = value.data;
+      const { username, id, accountNonExpired, accountNonLocked, enabled, _links, name } = value.data;
 
-      return { username, id, accountNonExpired, accountNonLocked, enabled, _links } as UserProfile;
+      return { username, id, accountNonExpired, accountNonLocked, enabled, _links, name } as UserProfile;
     })
     .then(async (user) => {
       const id = String(user.id || 1);

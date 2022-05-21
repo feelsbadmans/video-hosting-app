@@ -49,7 +49,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
         <h3 className={css.name}>{data.name}</h3>
         <div className={css.line} />
         <div className={css.userContainer}>
-          <User needAuthorities={false} user={data.author as UserEntity} className={css.user} />
+          <User needAuthorities={false} user={data.author as UserEntity} className={css.user} needExitButton={false} />
           {isEditable && <Button onClick={handleEditClick}>Редактировать</Button>}
         </div>
         {!!data.description && <div className={css.desc}>{data.description}</div>}

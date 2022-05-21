@@ -1,10 +1,9 @@
-import { VideoDto } from 'api/videos';
+import { UserProfile } from 'api/userProfile';
 import { PageMetadata } from 'api_generated';
 import { FetchStatus } from 'types/fetchStatus';
 
-export type VideosState = {
-  data?: VideoDto[];
-  allData?: VideoDto[];
+export type UsersState = {
+  data?: UserProfile[];
   pageInfo?: PageMetadata;
   fetchStatus: FetchStatus;
   errorMsg?: string;

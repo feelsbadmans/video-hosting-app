@@ -12,17 +12,19 @@ type NavBarProps = {
   needAuthorities: true;
   user: UserProfile;
   className?: string;
+  needExitButton?: boolean;
 };
 
 type VidProps = {
   needAuthorities: false;
   user: UserEntity;
   className?: string;
+  needExitButton?: boolean;
 };
 
 type UserProps = NavBarProps | VidProps;
 
-export const User: React.FC<UserProps> = ({ user, needAuthorities, className }) => {
+export const User: React.FC<UserProps> = ({ needExitButton = true, user, needAuthorities, className }) => {
   const navigate = useNavigate();
 
   const role = useMemo(() => {
@@ -48,7 +50,7 @@ export const User: React.FC<UserProps> = ({ user, needAuthorities, className }) 
         <span className={css.role}>{role}</span>
       </div>
       <img className={css.img} src={require('assets/jpg/user.jpeg')} />
-      {needAuthorities && (
+      {needExitButton && (
         <Button
           size="s"
           view="outlineSecondary"

@@ -13,8 +13,7 @@
  */
 
 import { Configuration } from './configuration';
-import { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { globalAxios } from 'api/axios';
+import globalAxios, { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import {
@@ -579,6 +578,12 @@ export interface EntityModelUserGroupEntity {
    * @memberof EntityModelUserGroupEntity
    */
   users: Array<UserEntity>;
+  /**
+   *
+   * @type {Set<VideoEntity>}
+   * @memberof EntityModelUserGroupEntity
+   */
+  videos?: Set<VideoEntity>;
   /**
    *
    * @type {number}
@@ -1181,6 +1186,12 @@ export interface UserGroupEntity {
   users: Array<UserEntity>;
   /**
    *
+   * @type {Set<VideoEntity>}
+   * @memberof UserGroupEntity
+   */
+  videos?: Set<VideoEntity>;
+  /**
+   *
    * @type {number}
    * @memberof UserGroupEntity
    */
@@ -1206,6 +1217,12 @@ export interface UserGroupEntityRequestBody {
   users: Array<string>;
   /**
    *
+   * @type {Array<string>}
+   * @memberof UserGroupEntityRequestBody
+   */
+  videos?: Array<string>;
+  /**
+   *
    * @type {number}
    * @memberof UserGroupEntityRequestBody
    */
@@ -1229,6 +1246,12 @@ export interface UserGroupEntityResponse {
    * @memberof UserGroupEntityResponse
    */
   users: Array<UserEntity>;
+  /**
+   *
+   * @type {Set<VideoEntity>}
+   * @memberof UserGroupEntityResponse
+   */
+  videos?: Set<VideoEntity>;
   /**
    *
    * @type {number}
@@ -3185,7 +3208,7 @@ export const UserEntityEntityControllerApiAxiosParamCreator = function (configur
      */
     patchItemResourceUserentityPatch: async (
       id: string,
-      userEntityRequestBody: UserEntityRequestBody,
+      userEntityRequestBody: Partial<UserEntityRequestBody>,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'id' is not null or undefined
@@ -3359,7 +3382,7 @@ export const UserEntityEntityControllerApiFp = function (configuration?: Configu
      */
     async patchItemResourceUserentityPatch(
       id: string,
-      userEntityRequestBody: UserEntityRequestBody,
+      userEntityRequestBody: Partial<UserEntityRequestBody>,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EntityModelUserEntity>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.patchItemResourceUserentityPatch(
@@ -3566,7 +3589,7 @@ export class UserEntityEntityControllerApi extends BaseAPI {
    */
   public patchItemResourceUserentityPatch(
     id: string,
-    userEntityRequestBody: UserEntityRequestBody,
+    userEntityRequestBody: Partial<UserEntityRequestBody>,
     options?: AxiosRequestConfig,
   ) {
     return UserEntityEntityControllerApiFp(this.configuration)
@@ -5940,6 +5963,46 @@ export const UserGroupEntityPropertyReferenceControllerApiAxiosParamCreator = fu
       };
     },
     /**
+     * patch-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {CollectionModelObject} collectionModelObject
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPropertyReferenceUsergroupentityPatch1: async (
+      id: string,
+      collectionModelObject: CollectionModelObject,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('createPropertyReferenceUsergroupentityPatch1', 'id', id);
+      // verify required parameter 'collectionModelObject' is not null or undefined
+      assertParamExists('createPropertyReferenceUsergroupentityPatch1', 'collectionModelObject', collectionModelObject);
+      const localVarPath = `/user-groups/{id}/videos`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(collectionModelObject, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
      * update-userentity-by-usergroupentity-Id
      * @param {string} id
      * @param {CollectionModelObject} collectionModelObject
@@ -5956,6 +6019,46 @@ export const UserGroupEntityPropertyReferenceControllerApiAxiosParamCreator = fu
       // verify required parameter 'collectionModelObject' is not null or undefined
       assertParamExists('createPropertyReferenceUsergroupentityPut', 'collectionModelObject', collectionModelObject);
       const localVarPath = `/user-groups/{id}/users`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(collectionModelObject, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * update-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {CollectionModelObject} collectionModelObject
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPropertyReferenceUsergroupentityPut1: async (
+      id: string,
+      collectionModelObject: CollectionModelObject,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('createPropertyReferenceUsergroupentityPut1', 'id', id);
+      // verify required parameter 'collectionModelObject' is not null or undefined
+      assertParamExists('createPropertyReferenceUsergroupentityPut1', 'collectionModelObject', collectionModelObject);
+      const localVarPath = `/user-groups/{id}/videos`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
       let baseOptions;
@@ -6019,6 +6122,45 @@ export const UserGroupEntityPropertyReferenceControllerApiAxiosParamCreator = fu
       };
     },
     /**
+     * delete-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {string} propertyId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deletePropertyReferenceIdUsergroupentityDelete1: async (
+      id: string,
+      propertyId: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('deletePropertyReferenceIdUsergroupentityDelete1', 'id', id);
+      // verify required parameter 'propertyId' is not null or undefined
+      assertParamExists('deletePropertyReferenceIdUsergroupentityDelete1', 'propertyId', propertyId);
+      const localVarPath = `/user-groups/{id}/videos/{propertyId}`
+        .replace(`{${'id'}}`, encodeURIComponent(String(id)))
+        .replace(`{${'propertyId'}}`, encodeURIComponent(String(propertyId)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
      * delete-userentity-by-usergroupentity-Id
      * @param {string} id
      * @param {*} [options] Override http request option.
@@ -6031,6 +6173,39 @@ export const UserGroupEntityPropertyReferenceControllerApiAxiosParamCreator = fu
       // verify required parameter 'id' is not null or undefined
       assertParamExists('deletePropertyReferenceUsergroupentityDelete', 'id', id);
       const localVarPath = `/user-groups/{id}/users`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * delete-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deletePropertyReferenceUsergroupentityDelete1: async (
+      id: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('deletePropertyReferenceUsergroupentityDelete1', 'id', id);
+      const localVarPath = `/user-groups/{id}/videos`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
       let baseOptions;
@@ -6123,6 +6298,78 @@ export const UserGroupEntityPropertyReferenceControllerApiAxiosParamCreator = fu
         options: localVarRequestOptions,
       };
     },
+    /**
+     * get-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {string} propertyId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    followPropertyReferenceUsergroupentityGet2: async (
+      id: string,
+      propertyId: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('followPropertyReferenceUsergroupentityGet2', 'id', id);
+      // verify required parameter 'propertyId' is not null or undefined
+      assertParamExists('followPropertyReferenceUsergroupentityGet2', 'propertyId', propertyId);
+      const localVarPath = `/user-groups/{id}/videos/{propertyId}`
+        .replace(`{${'id'}}`, encodeURIComponent(String(id)))
+        .replace(`{${'propertyId'}}`, encodeURIComponent(String(propertyId)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * get-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    followPropertyReferenceUsergroupentityGet21: async (
+      id: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('followPropertyReferenceUsergroupentityGet21', 'id', id);
+      const localVarPath = `/user-groups/{id}/videos`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
   };
 };
 
@@ -6153,6 +6400,25 @@ export const UserGroupEntityPropertyReferenceControllerApiFp = function (configu
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
     },
     /**
+     * patch-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {CollectionModelObject} collectionModelObject
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createPropertyReferenceUsergroupentityPatch1(
+      id: string,
+      collectionModelObject: CollectionModelObject,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionModelVideoEntity>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.createPropertyReferenceUsergroupentityPatch1(
+        id,
+        collectionModelObject,
+        options,
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
      * update-userentity-by-usergroupentity-Id
      * @param {string} id
      * @param {CollectionModelObject} collectionModelObject
@@ -6165,6 +6431,25 @@ export const UserGroupEntityPropertyReferenceControllerApiFp = function (configu
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionModelUserEntity>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.createPropertyReferenceUsergroupentityPut(
+        id,
+        collectionModelObject,
+        options,
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * update-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {CollectionModelObject} collectionModelObject
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createPropertyReferenceUsergroupentityPut1(
+      id: string,
+      collectionModelObject: CollectionModelObject,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionModelVideoEntity>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.createPropertyReferenceUsergroupentityPut1(
         id,
         collectionModelObject,
         options,
@@ -6191,6 +6476,25 @@ export const UserGroupEntityPropertyReferenceControllerApiFp = function (configu
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
     },
     /**
+     * delete-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {string} propertyId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deletePropertyReferenceIdUsergroupentityDelete1(
+      id: string,
+      propertyId: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deletePropertyReferenceIdUsergroupentityDelete1(
+        id,
+        propertyId,
+        options,
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
      * delete-userentity-by-usergroupentity-Id
      * @param {string} id
      * @param {*} [options] Override http request option.
@@ -6201,6 +6505,22 @@ export const UserGroupEntityPropertyReferenceControllerApiFp = function (configu
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.deletePropertyReferenceUsergroupentityDelete(
+        id,
+        options,
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * delete-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deletePropertyReferenceUsergroupentityDelete1(
+      id: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deletePropertyReferenceUsergroupentityDelete1(
         id,
         options,
       );
@@ -6238,6 +6558,41 @@ export const UserGroupEntityPropertyReferenceControllerApiFp = function (configu
       const localVarAxiosArgs = await localVarAxiosParamCreator.followPropertyReferenceUsergroupentityGet1(id, options);
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
     },
+    /**
+     * get-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {string} propertyId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async followPropertyReferenceUsergroupentityGet2(
+      id: string,
+      propertyId: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionModelVideoEntity>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.followPropertyReferenceUsergroupentityGet2(
+        id,
+        propertyId,
+        options,
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * get-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async followPropertyReferenceUsergroupentityGet21(
+      id: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionModelVideoEntity>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.followPropertyReferenceUsergroupentityGet21(
+        id,
+        options,
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
   };
 };
 
@@ -6269,6 +6624,22 @@ export const UserGroupEntityPropertyReferenceControllerApiFactory = function (
         .then((request) => request(axios, basePath));
     },
     /**
+     * patch-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {CollectionModelObject} collectionModelObject
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPropertyReferenceUsergroupentityPatch1(
+      id: string,
+      collectionModelObject: CollectionModelObject,
+      options?: any,
+    ): AxiosPromise<CollectionModelVideoEntity> {
+      return localVarFp
+        .createPropertyReferenceUsergroupentityPatch1(id, collectionModelObject, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
      * update-userentity-by-usergroupentity-Id
      * @param {string} id
      * @param {CollectionModelObject} collectionModelObject
@@ -6285,6 +6656,22 @@ export const UserGroupEntityPropertyReferenceControllerApiFactory = function (
         .then((request) => request(axios, basePath));
     },
     /**
+     * update-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {CollectionModelObject} collectionModelObject
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPropertyReferenceUsergroupentityPut1(
+      id: string,
+      collectionModelObject: CollectionModelObject,
+      options?: any,
+    ): AxiosPromise<CollectionModelVideoEntity> {
+      return localVarFp
+        .createPropertyReferenceUsergroupentityPut1(id, collectionModelObject, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
      * delete-userentity-by-usergroupentity-Id
      * @param {string} id
      * @param {string} propertyId
@@ -6297,6 +6684,18 @@ export const UserGroupEntityPropertyReferenceControllerApiFactory = function (
         .then((request) => request(axios, basePath));
     },
     /**
+     * delete-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {string} propertyId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deletePropertyReferenceIdUsergroupentityDelete1(id: string, propertyId: string, options?: any): AxiosPromise<void> {
+      return localVarFp
+        .deletePropertyReferenceIdUsergroupentityDelete1(id, propertyId, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
      * delete-userentity-by-usergroupentity-Id
      * @param {string} id
      * @param {*} [options] Override http request option.
@@ -6305,6 +6704,17 @@ export const UserGroupEntityPropertyReferenceControllerApiFactory = function (
     deletePropertyReferenceUsergroupentityDelete(id: string, options?: any): AxiosPromise<void> {
       return localVarFp
         .deletePropertyReferenceUsergroupentityDelete(id, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * delete-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deletePropertyReferenceUsergroupentityDelete1(id: string, options?: any): AxiosPromise<void> {
+      return localVarFp
+        .deletePropertyReferenceUsergroupentityDelete1(id, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -6332,6 +6742,33 @@ export const UserGroupEntityPropertyReferenceControllerApiFactory = function (
     followPropertyReferenceUsergroupentityGet1(id: string, options?: any): AxiosPromise<CollectionModelUserEntity> {
       return localVarFp
         .followPropertyReferenceUsergroupentityGet1(id, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * get-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {string} propertyId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    followPropertyReferenceUsergroupentityGet2(
+      id: string,
+      propertyId: string,
+      options?: any,
+    ): AxiosPromise<CollectionModelVideoEntity> {
+      return localVarFp
+        .followPropertyReferenceUsergroupentityGet2(id, propertyId, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * get-videoentity-by-usergroupentity-Id
+     * @param {string} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    followPropertyReferenceUsergroupentityGet21(id: string, options?: any): AxiosPromise<CollectionModelVideoEntity> {
+      return localVarFp
+        .followPropertyReferenceUsergroupentityGet21(id, options)
         .then((request) => request(axios, basePath));
     },
   };
@@ -6363,6 +6800,24 @@ export class UserGroupEntityPropertyReferenceControllerApi extends BaseAPI {
   }
 
   /**
+   * patch-videoentity-by-usergroupentity-Id
+   * @param {string} id
+   * @param {CollectionModelObject} collectionModelObject
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UserGroupEntityPropertyReferenceControllerApi
+   */
+  public createPropertyReferenceUsergroupentityPatch1(
+    id: string,
+    collectionModelObject: CollectionModelObject,
+    options?: AxiosRequestConfig,
+  ) {
+    return UserGroupEntityPropertyReferenceControllerApiFp(this.configuration)
+      .createPropertyReferenceUsergroupentityPatch1(id, collectionModelObject, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
    * update-userentity-by-usergroupentity-Id
    * @param {string} id
    * @param {CollectionModelObject} collectionModelObject
@@ -6381,6 +6836,24 @@ export class UserGroupEntityPropertyReferenceControllerApi extends BaseAPI {
   }
 
   /**
+   * update-videoentity-by-usergroupentity-Id
+   * @param {string} id
+   * @param {CollectionModelObject} collectionModelObject
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UserGroupEntityPropertyReferenceControllerApi
+   */
+  public createPropertyReferenceUsergroupentityPut1(
+    id: string,
+    collectionModelObject: CollectionModelObject,
+    options?: AxiosRequestConfig,
+  ) {
+    return UserGroupEntityPropertyReferenceControllerApiFp(this.configuration)
+      .createPropertyReferenceUsergroupentityPut1(id, collectionModelObject, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
    * delete-userentity-by-usergroupentity-Id
    * @param {string} id
    * @param {string} propertyId
@@ -6395,6 +6868,20 @@ export class UserGroupEntityPropertyReferenceControllerApi extends BaseAPI {
   }
 
   /**
+   * delete-videoentity-by-usergroupentity-Id
+   * @param {string} id
+   * @param {string} propertyId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UserGroupEntityPropertyReferenceControllerApi
+   */
+  public deletePropertyReferenceIdUsergroupentityDelete1(id: string, propertyId: string, options?: AxiosRequestConfig) {
+    return UserGroupEntityPropertyReferenceControllerApiFp(this.configuration)
+      .deletePropertyReferenceIdUsergroupentityDelete1(id, propertyId, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
    * delete-userentity-by-usergroupentity-Id
    * @param {string} id
    * @param {*} [options] Override http request option.
@@ -6404,6 +6891,19 @@ export class UserGroupEntityPropertyReferenceControllerApi extends BaseAPI {
   public deletePropertyReferenceUsergroupentityDelete(id: string, options?: AxiosRequestConfig) {
     return UserGroupEntityPropertyReferenceControllerApiFp(this.configuration)
       .deletePropertyReferenceUsergroupentityDelete(id, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * delete-videoentity-by-usergroupentity-Id
+   * @param {string} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UserGroupEntityPropertyReferenceControllerApi
+   */
+  public deletePropertyReferenceUsergroupentityDelete1(id: string, options?: AxiosRequestConfig) {
+    return UserGroupEntityPropertyReferenceControllerApiFp(this.configuration)
+      .deletePropertyReferenceUsergroupentityDelete1(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
 
@@ -6431,6 +6931,33 @@ export class UserGroupEntityPropertyReferenceControllerApi extends BaseAPI {
   public followPropertyReferenceUsergroupentityGet1(id: string, options?: AxiosRequestConfig) {
     return UserGroupEntityPropertyReferenceControllerApiFp(this.configuration)
       .followPropertyReferenceUsergroupentityGet1(id, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * get-videoentity-by-usergroupentity-Id
+   * @param {string} id
+   * @param {string} propertyId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UserGroupEntityPropertyReferenceControllerApi
+   */
+  public followPropertyReferenceUsergroupentityGet2(id: string, propertyId: string, options?: AxiosRequestConfig) {
+    return UserGroupEntityPropertyReferenceControllerApiFp(this.configuration)
+      .followPropertyReferenceUsergroupentityGet2(id, propertyId, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * get-videoentity-by-usergroupentity-Id
+   * @param {string} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UserGroupEntityPropertyReferenceControllerApi
+   */
+  public followPropertyReferenceUsergroupentityGet21(id: string, options?: AxiosRequestConfig) {
+    return UserGroupEntityPropertyReferenceControllerApiFp(this.configuration)
+      .followPropertyReferenceUsergroupentityGet21(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }

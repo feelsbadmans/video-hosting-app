@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-1);
+  width: 40%;
+  height: 50%;
+  font-size: 24px;
+
+  h2 {
+    color: var(--color-text-1);
+    font-weight: 600;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  width: 600px;
+  padding: 0 60px;
+
+  button {
+    margin-top: 28px;
+  }
+
+  #file-upload-button {
+    margin-right: 20px;
+  }
+}
+
+.buttonsContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+
+  button:last-child {
+    margin-left: 20px;
+  }
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: flex-start;
+  align-self: flex-start;
+  margin-left: 8px;
+  margin-top: 8px;
+}

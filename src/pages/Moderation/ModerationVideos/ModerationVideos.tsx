@@ -1,27 +1,25 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { LabeledValue } from 'antd/lib/select';
 import { getAllGroups } from 'api/utilsApis';
 import { VideoDto } from 'api/videos';
 import { usePageState } from 'hooks/usePageState';
+import { getAllVideosAction } from 'redux/actions/videos';
 import { useAppSelector } from 'redux/hooks';
 
-import { Button } from 'components/Button';
 import { Pagination } from 'components/Pagination';
 import { Spinner } from 'components/Spinner';
 import { UploadModal } from 'components/UploadModal';
 import { Video } from 'components/Video';
 
-import css from './MyVideos.module.scss';
+import css from './ModerationVideos.module.scss';
 
-export const MyVideos: React.VFC = () => {
+export const ModerationVideos: React.VFC = () => {
   const loadingRef = useRef(false);
-
-  const { data, fetchStatus } = useAppSelector((store) => store.userProfile);
+  const dispatch = useDispatch();
 
   const [uploadModalVisible, setUploadModalVisible] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoDto | undefined>(undefined);
-
-  const { pageState, handleSetPage } = usePageState({ page: 1, size: 18 });
 
   const [userGroups, setUserGroups] = useState<LabeledValue[]>([]);
 
@@ -35,27 +33,34 @@ export const MyVideos: React.VFC = () => {
     void getGroups();
   }, []);
 
-  const videos = useMemo(
-    () => data?.videos.slice(pageState.size * (pageState.page - 1), pageState.size * pageState.page) || [],
-    [data?.videos, pageState.page, pageState.size],
-  );
+  const { fetchStatus: fetchVideo, pageInfo, allData: videos } = useAppSelector((store) => store.videos);
 
-  if (fetchStatus === 'error') {
+  const { pageState, handleSetPage, handleSetSize } = usePageState({ page: 1, size: 18 });
+
+  const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    dispatch(
+      getAllVideosAction({
+        pageInfo: { number: pageState.page - 1, size: pageState.size },
+      }),
+    );
+    setFetched(true);
+  }, [dispatch, pageState.size, pageState.page]);
+
+  if (fetchVideo === 'error') {
     return <h1>Доступных видео пока нет :(</h1>;
   }
 
   return (
     <div className={css.container}>
-      {loadingRef.current || !data ? (
+      {loadingRef.current || !videos || !fetched ? (
         <div className={css.spinner}>
           <Spinner theme="light" />
         </div>
       ) : (
         <>
           <div className={css.videos}>
-            <Button className={css.buttonUpload} onClick={() => setUploadModalVisible(true)}>
-              Загрузить видео
-            </Button>
             {videos.map((v) => (
               <Video
                 data={v}
@@ -72,13 +77,16 @@ export const MyVideos: React.VFC = () => {
             ))}
           </div>
           <Pagination
-            onChange={(p) => {
-              if (fetchStatus !== 'fetching') {
+            onChange={(p, s) => {
+              if (p !== pageState.page) {
                 handleSetPage(p);
+              }
+              if (s !== pageState.size) {
+                handleSetSize(s);
               }
             }}
             current={pageState.page}
-            total={data?.videos.length}
+            total={pageInfo?.totalElements}
             pageSize={pageState.size}
           />
         </>
@@ -90,6 +98,11 @@ export const MyVideos: React.VFC = () => {
           onClose={() => {
             setSelectedVideo(undefined);
             setUploadModalVisible(false);
+            dispatch(
+              getAllVideosAction({
+                pageInfo: { number: pageState.page - 1, size: pageState.size },
+              }),
+            );
           }}
         />
       )}

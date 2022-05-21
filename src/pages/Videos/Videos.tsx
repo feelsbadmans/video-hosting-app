@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { usePageState } from 'hooks/usePageState';
-import { getAllVideosAction } from 'redux/actions/videos';
+import { getAllVideosByGroupIdAction } from 'redux/actions/videos';
 import { useAppSelector } from 'redux/hooks';
 
 import { Pagination } from 'components/Pagination';
@@ -13,29 +13,24 @@ import css from './Videos.module.scss';
 export const Videos: React.VFC = () => {
   const dispatch = useDispatch();
 
-  const { fetchStatus, pageInfo, data } = useAppSelector((store) => store.videos);
+  const { fetchStatus, data } = useAppSelector((store) => store.videos);
   const user = useAppSelector((store) => store.userProfile);
-
-  const [needResize, setNeedResize] = useState(false);
 
   const { pageState, handleSetPage, handleSetSize } = usePageState({ page: 1, size: 18 });
 
-  useEffect(() => {
-    if (fetchStatus === 'initial' && user.fetchStatus === 'fetched' && user.data?.group) {
-      dispatch(getAllVideosAction({ groupname: user.data.group.name }));
-    }
-  }, [dispatch, fetchStatus, user]);
+  const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
-    if (needResize) {
-      dispatch(
-        getAllVideosAction({
-          groupname: user?.data?.group?.name || '',
-          pageInfo: { number: pageState.page - 1, size: pageState.size },
-        }),
-      );
+    if (user.fetchStatus === 'fetched' && user.data?.group) {
+      dispatch(getAllVideosByGroupIdAction({ id: user.data.group.id || 1 }));
+      setFetched(true);
     }
-  }, [dispatch, pageState.page, pageState.size, user, needResize]);
+  }, [dispatch, user]);
+
+  const videos = useMemo(
+    () => data?.slice(pageState.size * (pageState.page - 1), pageState.size * pageState.page) || [],
+    [data, pageState.page, pageState.size],
+  );
 
   if (fetchStatus === 'error') {
     return <h1>Доступных видео пока нет :(</h1>;
@@ -43,29 +38,28 @@ export const Videos: React.VFC = () => {
 
   return (
     <div className={css.container}>
-      {fetchStatus === 'fetching' || !data ? (
+      {fetchStatus === 'fetching' || !videos || !fetched ? (
         <div className={css.spinner}>
           <Spinner theme="light" />
         </div>
       ) : (
-        <div className={css.videos}>
-          {data.map((v) => (
-            <Video data={v} key={v._links?.self.href || v.source} />
-          ))}
-        </div>
+        <>
+          <div className={css.videos}>
+            {videos.map((v) => (
+              <Video data={v} key={v._links?.self.href || v.source} />
+            ))}
+          </div>
+          <Pagination
+            onChange={(p, s) => {
+              handleSetPage(p);
+              handleSetSize(s);
+            }}
+            current={pageState.page}
+            total={data?.length}
+            pageSize={pageState.size}
+          />
+        </>
       )}
-      <Pagination
-        onChange={(p, s) => {
-          if (fetchStatus !== 'fetching') {
-            handleSetPage(p);
-            handleSetSize(s);
-            setNeedResize(true);
-          }
-        }}
-        current={pageState.page}
-        total={pageInfo?.totalElements}
-        pageSize={pageState.size}
-      />
     </div>
   );
 };

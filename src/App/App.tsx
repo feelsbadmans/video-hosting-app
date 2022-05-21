@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { useShowError } from 'hooks/useShowError';
 import { AuthPage, RegisterPage } from 'pages/Auth';
 import { Info } from 'pages/Info';
+import { Moderation } from 'pages/Moderation';
 import { MyVideos } from 'pages/MyVideos';
 import { Videos } from 'pages/Videos';
 
@@ -54,7 +55,14 @@ export const App = () => {
                 </PrivateRoute>
               }
             />
-            <Route path="/moderation" element={<PrivateRoute></PrivateRoute>} />
+            <Route
+              path="/moderation"
+              element={
+                <PrivateRoute>
+                  <Moderation />
+                </PrivateRoute>
+              }
+            />
 
             <Route
               path="info"

@@ -1,13 +1,13 @@
 .container {
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
+  width: 100%;
   display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 90px 40px;
 
   &Elements {
     color: var(--color-text-1);
     margin-right: 20px;
-    margin-top: 5.5px;
   }
 
   :global {
@@ -31,7 +31,7 @@
         }
 
         &:hover {
-          border-color: var(--color-text-1);
+          border-color: var(--color-bg-3);
           * {
             color: var(--color-bg-3);
           }
