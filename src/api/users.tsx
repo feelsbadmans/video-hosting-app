@@ -28,7 +28,9 @@ export const getAllUsers = async (pageInfo?: PageMetadata) => {
           (res.users as UserProfile[]).map((user) => {
             return usersService
               .getItemResourceUserentityGet(String(user.id))
-              .then((res) => res.data as unknown as UserProfile);
+              .then(
+                (res) => ({ ...res.data, authorities: user.authorities, group: user.group } as unknown as UserProfile),
+              );
           }),
         ),
       };

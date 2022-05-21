@@ -16,7 +16,7 @@ export const PrivateRoute: React.FC = ({ children }) => {
 
   const canFetch = !!token && !!username;
 
-  const { user, error } = useCommonRequests(canFetch);
+  const { user, error, fetchStatus } = useCommonRequests(canFetch);
 
   useEffect(() => {
     if (!canFetch) {
@@ -26,6 +26,76 @@ export const PrivateRoute: React.FC = ({ children }) => {
   }, [canFetch]);
 
   const render = useCallback(() => {
+    if (fetchStatus === 'fetching') {
+      return (
+        <div className={css.spinnerContainer}>
+          <div className={css.spinner}>
+            <Spinner theme={'light'} />
+          </div>
+        </div>
+      );
+    }
+
+    if (user) {
+      if (!user.enabled) {
+        return (
+          <div className={css.spinnerContainer}>
+            <div className={css.errorContainer}>
+              <h1 className={css.errorHeader}>Ошибка!</h1>
+              <p className={css.errorMessage}>Данный аккаунт отключен</p>
+              <p className={css.errorMessage}>
+                Попробуйте&nbsp;
+                <span
+                  className={css.exitLink}
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('username');
+                    navigate('/auth');
+                  }}
+                >
+                  перезайти
+                </span>
+                &nbsp;в приложение
+              </p>
+            </div>
+          </div>
+        );
+      }
+
+      if (!user.accountNonExpired || !user.accountNonLocked) {
+        return (
+          <div className={css.spinnerContainer}>
+            <div className={css.errorContainer}>
+              <h1 className={css.errorHeader}>Ошибка!</h1>
+              <p className={css.errorMessage}>Данный аккаунт заблокирован</p>
+              <p className={css.errorMessage}>
+                Попробуйте&nbsp;
+                <span
+                  className={css.exitLink}
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('username');
+                    navigate('/auth');
+                    window.location.reload();
+                  }}
+                >
+                  перезайти
+                </span>
+                &nbsp;в приложение
+              </p>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <>
+          <NavBar user={user} />
+          {children}
+        </>
+      );
+    }
+
     if (error) {
       return (
         <div className={css.spinnerContainer}>
@@ -52,62 +122,6 @@ export const PrivateRoute: React.FC = ({ children }) => {
       );
     }
 
-    if (!user?.enabled) {
-      <div className={css.spinnerContainer}>
-        <div className={css.errorContainer}>
-          <h1 className={css.errorHeader}>Ошибка!</h1>
-          <p className={css.errorMessage}>Данный аккаунт отключен</p>
-          <p className={css.errorMessage}>
-            Попробуйте&nbsp;
-            <span
-              className={css.exitLink}
-              onClick={() => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('username');
-                navigate('/auth');
-              }}
-            >
-              перезайти
-            </span>
-            &nbsp;в приложение
-          </p>
-        </div>
-      </div>;
-    }
-
-    if (!user?.accountNonExpired || !user.accountNonLocked) {
-      <div className={css.spinnerContainer}>
-        <div className={css.errorContainer}>
-          <h1 className={css.errorHeader}>Ошибка!</h1>
-          <p className={css.errorMessage}>Данный аккаунт заблокирован</p>
-          <p className={css.errorMessage}>
-            Попробуйте&nbsp;
-            <span
-              className={css.exitLink}
-              onClick={() => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('username');
-                navigate('/auth');
-                window.location.reload();
-              }}
-            >
-              перезайти
-            </span>
-            &nbsp;в приложение
-          </p>
-        </div>
-      </div>;
-    }
-
-    if (user) {
-      return (
-        <>
-          <NavBar user={user} />
-          {children}
-        </>
-      );
-    }
-
     return (
       <div className={css.spinnerContainer}>
         <div className={css.spinner}>
@@ -115,7 +129,7 @@ export const PrivateRoute: React.FC = ({ children }) => {
         </div>
       </div>
     );
-  }, [error, user, navigate, children]);
+  }, [fetchStatus, error, user, navigate, children]);
 
   return canFetch ? <>{render()}</> : <Navigate to="/auth" />;
 };

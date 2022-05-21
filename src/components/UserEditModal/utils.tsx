@@ -5,7 +5,7 @@ import { UserFormType } from './types';
 
 const AUTHORITIES: { [key: EntityModelAuthorityEntity['authority']]: string } = {
   ORDINARY_USER: 'https://video-hosting-back.herokuapp.com/authorityEntity/1',
-  VIDEO_MAKER: 'https://video-hosting-back.herokuapp.com/authorityEntity/2',
+  VIDEO_CREATOR: 'https://video-hosting-back.herokuapp.com/authorityEntity/2',
   ADMIN: 'https://video-hosting-back.herokuapp.com/authorityEntity/3',
 };
 
