@@ -16,6 +16,7 @@ import { Select } from 'components/Select';
 
 import { UserFormType } from './types';
 import { AUTHORITIES_LABELS, getInitUserValues } from './utils';
+import { validateUserForm } from './validate';
 
 import css from './UserEditModal.module.scss';
 
@@ -54,7 +55,7 @@ export const UserEditModal: React.FC<UserEditModalProps> = ({ onClose, user, gro
 
   return (
     <Modal onClose={onClose}>
-      <Form<UserFormType> initialValues={initialValues} onSubmit={handleSubmit}>
+      <Form<UserFormType> initialValues={initialValues} onSubmit={handleSubmit} validate={validateUserForm}>
         {({ handleSubmit, values }) => (
           <form onSubmit={handleSubmit}>
             <div className={css.form}>
